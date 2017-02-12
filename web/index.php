@@ -19,7 +19,32 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->get('/', function() use($app) {
   $app['monolog']->addDebug('logging output.');
-  return $app['twig']->render('index.twig');
+  return $app['twig']->render('index.html');
+});
+
+$app->get('/create-account', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('caccount.html');
+});
+
+$app->get('/calendar', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('cal.html');
+});
+
+$app->get('/login', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('login.html');
+});
+
+$app->get('/map', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('map.html');
+});
+
+$app->get('/search', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('search.html');
 });
 
 $app->run();
