@@ -57,7 +57,7 @@ $app->get('/search', function() use($app) {
 });
 
 $app->get('/admin', function() use($app) {
-  $st = $app['pdo']->prepare('SELECT id FROM user');
+  $st = $app['pdo']->prepare('SELECT name FROM test_table');
   $st->execute();
 
   $names = array();
