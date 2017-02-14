@@ -3,6 +3,10 @@
 require('../vendor/autoload.php');
 
 $app = new Silex\Application();
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 $app['debug'] = true;
 
 // Register the monolog logging service
@@ -15,7 +19,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/views',
 ));
 
-// Add PDO Connection
+// Register database access
 $dbopts = parse_url(getenv('DATABASE_URL'));
 $app->register(new Herrera\Pdo\PdoServiceProvider(),
                array(
@@ -26,6 +30,56 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 );
 
 // Our web handlers
+$app->post('/account-creation', function (Request $request) {
+    $app['monolog']->addDebug('logging output.');
+    $type = $request->get('type');
+    $email = $request->get('email');
+    $password = $request->get('password');
+
+    // Save account information into database
+    try {
+      $stmt = $app['db']->prepare("INSERT INTO user VALUES $type, $email, $password");
+      $stmt->bindValue(1, $email, PDO::PARAM_INT);
+      $stmt->bindValue(2, $password, PDO::PARAM_INT);
+      $stmt->execute();
+      return $app['twig']->render('create-success.html');
+    }
+    // Return account creation failure
+    catch {
+      return $app['twig']->render('create-failure.html');
+    }
+});
+
+$app->post('/account-login', function (Request $request) {
+    $app['monolog']->addDebug('logging output.');
+    $email = $request->get('email');
+    $password = $request->get('password');
+
+    // Save account information into database
+    $st = $app['db']->prepare("SELECT password FROM user WHERE email $email");
+    $st->execute();
+
+    $passGrab = $st->fetch(PDO::FETCH_ASSOC)
+
+    if ($password == $passGrab)
+      return $app['twig']->render('login-success.html');
+    }
+    // Return account creation failure
+    else {
+      return $app['twig']->render('login-failure.html');
+    }
+
+    $names = array();
+  while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+    $app['monolog']->addDebug('Row ' . $row['name']);
+    $names[] = $row;
+  }
+
+  return $app['twig']->render('database.twig', array(
+    'names' => $names
+  ));
+});
+
 $app->get('/', function() use($app) {
   $app['monolog']->addDebug('logging output.');
   return $app['twig']->render('index.html');
@@ -33,12 +87,12 @@ $app->get('/', function() use($app) {
 
 $app->get('/create-account', function() use($app) {
   $app['monolog']->addDebug('logging output.');
-  return $app['twig']->render('caccount.html');
+  return $app['twig']->render('create-account.html');
 });
 
 $app->get('/calendar', function() use($app) {
   $app['monolog']->addDebug('logging output.');
-  return $app['twig']->render('cal.html');
+  return $app['twig']->render('calendar.html');
 });
 
 $app->get('/login', function() use($app) {
@@ -54,21 +108,6 @@ $app->get('/map', function() use($app) {
 $app->get('/search', function() use($app) {
   $app['monolog']->addDebug('logging output.');
   return $app['twig']->render('search.html');
-});
-
-$app->get('/admin', function() use($app) {
-  $st = $app['pdo']->prepare('SELECT name FROM test_table');
-  $st->execute();
-
-  $names = array();
-  while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-    $app['monolog']->addDebug('Row ' . $row['id']);
-    $names[] = $row;
-  }
-
-  return $app['twig']->render('database.twig', array(
-    'names' => $names
-  ));
 });
 
 $app->run();
