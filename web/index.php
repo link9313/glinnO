@@ -59,7 +59,7 @@ $app->post('/account-login', function (Request $request) {
     $st = $app['db']->prepare("SELECT password FROM user WHERE email $email");
     $st->execute();
 
-    $passGrab = $st->fetch(PDO::FETCH_ASSOC)
+    $passGrab = $st->fetch(PDO::FETCH_ASSOC);
 
     if ($password == $passGrab)
       return $app['twig']->render('login-success.html');
