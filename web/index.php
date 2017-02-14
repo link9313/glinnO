@@ -32,7 +32,7 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 // Our web handlers
 $app->post('/account-creation', function (Request $request) {
     $app['monolog']->addDebug('logging output.');
-    $type = $request->get('type');
+    $type = "admin"
     $email = $request->get('email');
     $password = $request->get('password');
 
