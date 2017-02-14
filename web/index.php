@@ -61,7 +61,7 @@ $app->post('/account-login', function (Request $request) {
 
     $passGrab = $st->fetch(PDO::FETCH_ASSOC);
 
-    if ($password == $passGrab)
+    if ($password == $passGrab) {
       return $app['twig']->render('login-success.html');
     }
     // Return account creation failure
