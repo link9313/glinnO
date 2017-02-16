@@ -38,17 +38,17 @@ $app->post('/account-creation', function (Request $request) {
     $password = $request->get('inputPassword');
 
     // Save account information into database
-    try {
+    // try {
       $stmt = $app['db']->prepare("INSERT INTO user VALUES $type, $email, $password");
       $stmt->bindValue(1, $email, PDO::PARAM_INT);
       $stmt->bindValue(2, $password, PDO::PARAM_INT);
       $stmt->execute();
       return $app['twig']->render('create-success.html');
-    }
+    // }
     // Return account creation failure
-    catch (PDO::ErrorException $Exception) {
-      return $app['twig']->render('create-failure.html');
-    }
+    //catch (PDO::ErrorException $Exception) {
+    //  return $app['twig']->render('create-failure.html');
+    //}
 });
 
 $app->post('/account-login', function (Request $request) {
