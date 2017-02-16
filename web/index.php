@@ -55,7 +55,7 @@ $app->post('/account-login', function() use($app) {
     $st->execute();
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $passGrab = $row;
+      $passGrab = $row['password'];
     }
 
     $app['monolog']->addDebug("$passGrab");
