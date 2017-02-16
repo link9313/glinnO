@@ -4,8 +4,6 @@ require('../vendor/autoload.php');
 
 $app = new Silex\Application();
 
-use Symfony\Component\HttpFoundation\Request;
-
 $app['debug'] = true;
 
 // Register the monolog logging service
@@ -42,14 +40,17 @@ $app->post('/account-creation', function() use($app) {
     return $app['twig']->render('create-success.html');
 });
 
-$app->post('/account-login', function (Request $request) {
+$app->post('/account-login', function() use($app) {
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
 
     // Read account information from database
     $st = $app['pdo']->prepare("SELECT password FROM user WHERE email = '$email';");
     $st->execute();
-    $passGrab = $st->fetch(PDO::FETCH_ASSOC);
+
+    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+      $passGrab = $row;
+    }
 
     if ($password == $passGrab) {
       return $app['twig']->render('login-success.html');
