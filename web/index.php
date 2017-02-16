@@ -41,10 +41,6 @@ $app->post('/account-creation', function() use($app) {
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
 
-    echo $name;
-    echo $email;
-    echo $password;
-
     // Save account information into database
     #$stmt = $app['pdo']->prepare("INSERT INTO user SET type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
     $stmt = $app['pdo']->prepare("INSERT INTO user VALUES (DEFAULT, $type, $name, $email, $password, DEFAULT);");
