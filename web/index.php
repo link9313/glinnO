@@ -47,7 +47,7 @@ $app->post('/account-login', function (Request $request) {
     $password = $_POST['inputPassword'];
 
     // Read account information from database
-    $st = $app['pdo']->prepare("SELECT password FROM user WHERE email=$email;");
+    $st = $app['pdo']->prepare("SELECT password FROM user WHERE email = '$email';");
     $st->execute();
     $passGrab = $st->fetch(PDO::FETCH_ASSOC);
 
