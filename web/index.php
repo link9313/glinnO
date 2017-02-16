@@ -51,12 +51,14 @@ $app->post('/account-login', function() use($app) {
     $password = $_POST['inputPassword'];
 
     // Read account information from database
-    $st = $app['pdo']->prepare("SELECT password FROM user WHERE email = '$email';");
+    $st = $app['pdo']->prepare("SELECT password FROM users WHERE email = '$email';");
     $st->execute();
 
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
       $passGrab = $row;
     }
+
+    $app['monolog']->addDebug("$passGrab");
 
     if ($password == $passGrab) {
       return $app['twig']->render('login-success.html');
