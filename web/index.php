@@ -30,8 +30,6 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 );
 
 // Our web handlers
-
-
 $app->post('/account-creation', function() use($app) {
     $type = "admin";
 
@@ -43,20 +41,14 @@ $app->post('/account-creation', function() use($app) {
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
 
+    echo $name;
+    echo $email;
+    echo $password;
+
     // Save account information into database
-    // try {
-      $stmt = $app['pdo']->prepare("INSERT INTO user set type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
-      #$stmt->bindValue(1, $type, PDO::PARAM_INT);
-      #$stmt->bindValue(2, $name, PDO::PARAM_INT);
-      #$stmt->bindValue(3, $email, PDO::PARAM_INT);
-      #$stmt->bindValue(4, $password, PDO::PARAM_INT);
-      $stmt->execute();
-      return $app['twig']->render('create-success.html');
-    // }
-    // Return account creation failure
-    //catch (PDO::ErrorException $Exception) {
-    //  return $app['twig']->render('create-failure.html');
-    //}
+    $stmt = $app['pdo']->prepare("INSERT INTO user set type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
+    $stmt->execute();
+    return $app['twig']->render('create-success.html');
 });
 
 $app->post('/account-login', function (Request $request) {
