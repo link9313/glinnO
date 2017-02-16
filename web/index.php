@@ -21,33 +21,37 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 // Register database access
 $dbopts = parse_url(getenv('DATABASE_URL'));
+
 $app->register(new Herrera\Pdo\PdoServiceProvider(),
-               array(
-                   'pdo.dsn' => 'pgsql:dbname='.ltrim($dbopts["path"],'/').';host='.$dbopts["host"] . ';port=' . $dbopts["port"],
-                   'pdo.username' => $dbopts["user"],
-                   'pdo.password' => $dbopts["pass"]
-               )
+                array(
+                  'pdo.dsn' => 'pgsql:dbname='.ltrim($dbopts["path"],'/').';host='.$dbopts["host"] . ';port=' . $dbopts["port"],
+                  'pdo.username' => $dbopts["user"],
+                  'pdo.password' => $dbopts["pass"]
+                )
 );
 
 // Our web handlers
 $app->post('/account-creation', function (Request $request) {
     $app['monolog']->addDebug('logging output.');
     $type = "admin"
-    $email = $request->get('email');
-    $password = $request->get('password');
+    $name = $request->get('inputName');
+    $email = $request->get('inputEmail');
+    $password = $request->get('inputPassword');
+
+    return $email;
 
     // Save account information into database
-    //try {
+    try {
       $stmt = $app['db']->prepare("INSERT INTO user VALUES $type, $email, $password");
       $stmt->bindValue(1, $email, PDO::PARAM_INT);
       $stmt->bindValue(2, $password, PDO::PARAM_INT);
       $stmt->execute();
       return $app['twig']->render('create-success.html');
-    //}
+    }
     // Return account creation failure
-    //catch {
-    //  return $app['twig']->render('create-failure.html');
-    //}
+    catch (PDO::ErrorException $Exception) {
+      return $app['twig']->render('create-failure.html');
+    }
 });
 
 $app->post('/account-login', function (Request $request) {
