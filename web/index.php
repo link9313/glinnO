@@ -32,18 +32,12 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 // Our web handlers
 $app->post('/account-creation', function() use($app) {
     $type = "admin";
-
-#    $name = $request->post('inputName');
-#    $email = $request->post('inputEmail');
-#    $password = $request->post('inputPassword');
-
     $name = $_POST['inputName'];
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
 
     // Save account information into database
-    #$stmt = $app['pdo']->prepare("INSERT INTO user SET type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
-    $stmt = $app['pdo']->prepare("INSERT INTO user VALUES (DEFAULT, $type, $name, $email, $password, DEFAULT);");
+    $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, $type, $name, $email, $password, DEFAULT);");
     $stmt->execute();
     return $app['twig']->render('create-success.html');
 });
