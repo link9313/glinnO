@@ -29,7 +29,7 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 
 // Our web handlers
 $app->post('/account-creation', function() use($app) {
-    $type = "admin";
+    $type = $_POST['type'];
     $name = $_POST['inputName'];
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
@@ -54,12 +54,12 @@ $app->post('/account-login', function() use($app) {
     $st = $app['pdo']->prepare("SELECT password FROM users WHERE email = '$email';");
     $st->execute();
 
+    // Obtain password from query
     while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
       $passGrab = $row['password'];
     }
 
-    $app['monolog']->addDebug("$passGrab");
-
+    // Check user-entered password against saved one
     if ($password == $passGrab) {
       return $app['twig']->render('login-success.html');
     }
