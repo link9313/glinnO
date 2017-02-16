@@ -5,7 +5,6 @@ require('../vendor/autoload.php');
 $app = new Silex\Application();
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 $app['debug'] = true;
 
@@ -33,12 +32,10 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 // Our web handlers
 $app->post('/account-creation', function (Request $request) {
     $app['monolog']->addDebug('logging output.');
-    $type = "admin"
+    $type = "admin";
     $name = $request->get('inputName');
     $email = $request->get('inputEmail');
     $password = $request->get('inputPassword');
-
-    return $email;
 
     // Save account information into database
     try {
