@@ -33,11 +33,17 @@ $app->post('/account-creation', function() use($app) {
     $name = $_POST['inputName'];
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
+    $password2 = $_POST['inputPassword2'];
 
     // Save account information into database
-    $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
-    $stmt->execute();
-    return $app['twig']->render('create-success.html');
+    if($password == $password2) {
+      $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
+      $stmt->execute();
+      return $app['twig']->render('create-success.html');
+    }
+    else {
+      return $app['twig']->render('create-failure.html');
+    }
 });
 
 $app->post('/account-login', function() use($app) {
