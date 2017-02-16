@@ -37,20 +37,18 @@ $app->post('/account-creation', function() use($app) {
     $password = $_POST['inputPassword'];
 
     // Save account information into database
-    $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, $type, $name, $email, $password, DEFAULT);");
+    $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
     $stmt->execute();
     return $app['twig']->render('create-success.html');
 });
 
 $app->post('/account-login', function (Request $request) {
-    $app['monolog']->addDebug('logging output.');
-    $email = $request->get('email');
-    $password = $request->get('password');
+    $email = $_POST['inputEmail'];
+    $password = $_POST['inputPassword'];
 
-    // Save account information into database
-    $st = $app['db']->prepare("SELECT password FROM user WHERE email $email;");
+    // Read account information from database
+    $st = $app['pdo']->prepare("SELECT password FROM user WHERE email=$email;");
     $st->execute();
-
     $passGrab = $st->fetch(PDO::FETCH_ASSOC);
 
     if ($password == $passGrab) {
@@ -60,16 +58,6 @@ $app->post('/account-login', function (Request $request) {
     else {
       return $app['twig']->render('login-failure.html');
     }
-
-    $names = array();
-  while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-    $app['monolog']->addDebug('Row ' . $row['name']);
-    $names[] = $row;
-  }
-
-  return $app['twig']->render('database.twig', array(
-    'names' => $names
-  ));
 });
 
 $app->get('/', function() use($app) {
