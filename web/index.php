@@ -18,20 +18,19 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/views',
 ));
 
-// Register database access
+// Register the Postgres database add-on
 $dbopts = parse_url(getenv('DATABASE_URL'));
-
 $app->register(new Herrera\Pdo\PdoServiceProvider(),
-                array(
-                  'pdo.dsn' => 'pgsql:dbname='.ltrim($dbopts["path"],'/').';host='.$dbopts["host"] . ';port=' . $dbopts["port"],
-                  'pdo.username' => $dbopts["user"],
-                  'pdo.password' => $dbopts["pass"]
-                )
+  array(
+    'pdo.dsn' => 'pgsql:dbname='.ltrim($dbopts["path"],'/').';host='.$dbopts["host"],
+    'pdo.port' => $dbopts["port"],
+    'pdo.username' => $dbopts["user"],
+    'pdo.password' => $dbopts["pass"]
+  )
 );
 
 // Our web handlers
-$app->post('/account-creation', function (Request $request) {
-    //$app['monolog']->addDebug('logging output.');
+$app->get('/account-creation/', function() use($app) {
     $type = "admin";
     $name = $request->get('inputName');
     $email = $request->get('inputEmail');
@@ -39,11 +38,11 @@ $app->post('/account-creation', function (Request $request) {
 
     // Save account information into database
     // try {
-      $stmt = $app['db']->prepare("INSERT INTO user VALUES (?), (?), (?), (?)");
-      $stmt->bindValue(1, $type, PDO::PARAM_INT);
-      $stmt->bindValue(2, $name, PDO::PARAM_INT);
-      $stmt->bindValue(3, $email, PDO::PARAM_INT);
-      $stmt->bindValue(4, $password, PDO::PARAM_INT);
+      $stmt = $app['pdo']->prepare("INSERT INTO user set type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
+      #$stmt->bindValue(1, $type, PDO::PARAM_INT);
+      #$stmt->bindValue(2, $name, PDO::PARAM_INT);
+      #$stmt->bindValue(3, $email, PDO::PARAM_INT);
+      #$stmt->bindValue(4, $password, PDO::PARAM_INT);
       $stmt->execute();
       return $app['twig']->render('create-success.html');
     // }
