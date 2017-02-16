@@ -29,7 +29,7 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 
 // Our web handlers
 $app->post('/account-creation', function() use($app) {
-    $type = $_POST['type'];
+    $type = $_POST['radio'];
     $name = $_POST['inputName'];
     $email = $_POST['inputEmail'];
     $password = $_POST['inputPassword'];
