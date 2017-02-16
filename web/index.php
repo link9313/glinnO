@@ -46,7 +46,8 @@ $app->post('/account-creation', function() use($app) {
     echo $password;
 
     // Save account information into database
-    $stmt = $app['pdo']->prepare("INSERT INTO user set type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
+    #$stmt = $app['pdo']->prepare("INSERT INTO user SET type = ''".$type."' name= '".$name."' email='".$email."' password='".$password."';");
+    $stmt = $app['pdo']->prepare("INSERT INTO user VALUES (DEFAULT, $type, $name, $email, $password, DEFAULT);");
     $stmt->execute();
     return $app['twig']->render('create-success.html');
 });
@@ -57,7 +58,7 @@ $app->post('/account-login', function (Request $request) {
     $password = $request->get('password');
 
     // Save account information into database
-    $st = $app['db']->prepare("SELECT password FROM user WHERE email $email");
+    $st = $app['db']->prepare("SELECT password FROM user WHERE email $email;");
     $st->execute();
 
     $passGrab = $st->fetch(PDO::FETCH_ASSOC);
