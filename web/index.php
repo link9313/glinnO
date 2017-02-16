@@ -30,7 +30,9 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 );
 
 // Our web handlers
-$app->get('/account-creation', function() use($app) {
+
+
+$app->post('/account-creation', function() use($app) {
     $type = "admin";
     $name = $request->get('inputName');
     $email = $request->get('inputEmail');
