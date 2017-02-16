@@ -34,9 +34,14 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 
 $app->post('/account-creation', function() use($app) {
     $type = "admin";
-    $name = $request->post('inputName');
-    $email = $request->post('inputEmail');
-    $password = $request->post('inputPassword');
+
+#    $name = $request->post('inputName');
+#    $email = $request->post('inputEmail');
+#    $password = $request->post('inputPassword');
+
+    $name = $_POST['inputName'];
+    $email = $_POST['inputEmail'];
+    $password = $_POST['inputPassword'];
 
     // Save account information into database
     // try {
