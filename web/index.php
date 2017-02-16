@@ -39,9 +39,11 @@ $app->post('/account-creation', function (Request $request) {
 
     // Save account information into database
     // try {
-      $stmt = $app['db']->prepare("INSERT INTO user VALUES $type, $email, $password");
-      $stmt->bindValue(1, $email, PDO::PARAM_INT);
-      $stmt->bindValue(2, $password, PDO::PARAM_INT);
+      $stmt = $app['db']->prepare("INSERT INTO user VALUES (?), (?), (?), (?)");
+      $stmt->bindValue(1, $type, PDO::PARAM_INT);
+      $stmt->bindValue(2, $name, PDO::PARAM_INT);
+      $stmt->bindValue(3, $email, PDO::PARAM_INT);
+      $stmt->bindValue(4, $password, PDO::PARAM_INT);
       $stmt->execute();
       return $app['twig']->render('create-success.html');
     // }
