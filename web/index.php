@@ -60,7 +60,7 @@ $app->post('/account-login', function() use($app) {
   }
 
   // Check user-entered password against saved one
-  if ($password == $passGrab) {
+  if ($password == $passGrab && $password != NULL) {
     return $app['twig']->render('login-success.html');
   }
   // Return account creation failure
