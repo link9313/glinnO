@@ -36,7 +36,7 @@ $app->post('/account-creation', function() use($app) {
   $password2 = $_POST['inputPassword2'];
 
   // Save account information into database
-  if($password == $password2) {
+  if($password == $password2 && $password != NULL) {
     $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
     $stmt->execute();
     return $app['twig']->render('create-success.html');
