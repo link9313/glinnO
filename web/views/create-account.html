@@ -35,18 +35,35 @@
           <hr>
           <p class="lead">Please enter the following information to create your new account.</p>
           <form action="account-creation" method="post">
-            <label for="inputName" class="sr-only">Name</label>
-            <input type="text" name="inputName" class="form-control" placeholder="Name" required autofocus>
-            <label for="inputEmail" class="sr-only">Email Address</label>
-            <input type="email" name="inputEmail" class="form-control" placeholder="Email Address" required>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" name="inputPassword" class="form-control" placeholder="Password" required>
-            <label for="inputPassword2" class="sr-only">Repeat Password</label>
-            <input type="password" name="inputPassword2" class="form-control" placeholder="Repeat Password" required>
-            <label class="radio-inline">
-            <input type="radio" value="contributor" name="radio">Contributor</label>
-            <label class="radio-inline">
-            <input type="radio" value="user" name="radio">User</label>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+              <label for="inputName" class="sr-only">Name</label>
+              <input type="text" name="inputName" class="form-control input-lg" placeholder="Name" required autofocus>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+              <label for="inputEmail" class="sr-only">Email Address</label>
+              <input type="email" name="inputEmail" class="form-control input-lg" placeholder="Email Address" required>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+              <label for="inputPassword" class="sr-only">Password</label>
+              <input type="password" name="inputPassword" class="form-control input-lg" placeholder="Password" required>
+            </div>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+              <label for="inputPassword2" class="sr-only">Repeat Password</label>
+              <input type="password" name="inputPassword2" class="form-control input-lg" placeholder="Repeat Password" required>
+            </div>
+
+            <div class="col-md-8 col-md-offset-2">
+              <p></p>
+            </div>
+
+            <div class="col-md-4 col-md-offset-4">
+              <label class="radio-inline"><input type="radio" value="contributor" name="radio">Contributor</label>
+              <label class="radio-inline"><input type="radio" value="user" name="radio">User</label>
+            </div>
 
             <div class="col-md-8 col-md-offset-2">
               <p></p>
