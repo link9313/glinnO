@@ -29,44 +29,44 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 
 // Our web handlers
 $app->post('/account-creation', function() use($app) {
-    $type = $_POST['radio'];
-    $name = $_POST['inputName'];
-    $email = $_POST['inputEmail'];
-    $password = $_POST['inputPassword'];
-    $password2 = $_POST['inputPassword2'];
+  $type = $_POST['radio'];
+  $name = $_POST['inputName'];
+  $email = $_POST['inputEmail'];
+  $password = $_POST['inputPassword'];
+  $password2 = $_POST['inputPassword2'];
 
-    // Save account information into database
-    if($password == $password2) {
-      $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
-      $stmt->execute();
-      return $app['twig']->render('create-success.html');
-    }
-    else {
-      return $app['twig']->render('create-failure.html');
-    }
+  // Save account information into database
+  if($password == $password2) {
+    $stmt = $app['pdo']->prepare("INSERT INTO users VALUES (DEFAULT, '$type', '$name', '$email', '$password', DEFAULT);");
+    $stmt->execute();
+    return $app['twig']->render('create-success.html');
+  }
+  else {
+    return $app['twig']->render('create-failure.html');
+  }
 });
 
 $app->post('/account-login', function() use($app) {
-    $email = $_POST['inputEmail'];
-    $password = $_POST['inputPassword'];
+  $email = $_POST['inputEmail'];
+  $password = $_POST['inputPassword'];
 
-    // Read account information from database
-    $st = $app['pdo']->prepare("SELECT password FROM users WHERE email = '$email';");
-    $st->execute();
+  // Read account information from database
+  $st = $app['pdo']->prepare("SELECT password FROM users WHERE email = '$email';");
+  $st->execute();
 
-    // Obtain password from query
-    while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-      $passGrab = $row['password'];
-    }
+  // Obtain password from query
+  while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
+    $passGrab = $row['password'];
+  }
 
-    // Check user-entered password against saved one
-    if ($password == $passGrab) {
-      return $app['twig']->render('login-success.html');
-    }
-    // Return account creation failure
-    else {
-      return $app['twig']->render('login-failure.html');
-    }
+  // Check user-entered password against saved one
+  if ($password == $passGrab) {
+    return $app['twig']->render('login-success.html');
+  }
+  // Return account creation failure
+  else {
+    return $app['twig']->render('login-failure.html');
+  }
 });
 
 $app->get('/', function() use($app) {
