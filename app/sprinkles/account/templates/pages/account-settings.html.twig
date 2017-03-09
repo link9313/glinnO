@@ -1,0 +1,41 @@
+{% extends forcedLayout ? forcedLayout  : "layouts/default.html.twig" %}
+
+{% set page_active = "account-settings" %}
+
+{% block stylesheets_page %}
+    <!-- Page-specific CSS asset bundle -->
+    {{ assets.css('css/form-widgets') | raw }}
+{% endblock %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{translate("ACCOUNT.SETTINGS")}}{% endblock %}
+
+{% block page_description %}{{translate("ACCOUNT.SETTINGS.DESCRIPTION")}}{% endblock %}
+
+{% block body_matter %}
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="box box-primary">
+                {% include "components/forms/settings-profile.html.twig" %}
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="box box-primary">
+                {% include "components/forms/settings-account.html.twig" %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts_page %}
+    <!-- Include validation rules -->
+    <script>
+    {% include "components/page.js.twig" %}
+    </script>
+
+    <!-- Include form widgets JS -->
+    {{ assets.js('js/form-widgets') | raw }}
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/account-settings') | raw }}
+{% endblock %}

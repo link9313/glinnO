@@ -1,0 +1,103 @@
+{% extends "layouts/default.html.twig" %}
+
+{% set page_active = "home" %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{translate("HOME")}}{% endblock %}
+
+{% block page_description %}Welcome to glinnO!{% endblock %}
+
+{% block body_matter %}
+
+    <!-- Header Carousel -->
+    <div class="box box-solid">
+        <div class="box-body">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="item active">
+                    <img src="http://placehold.it/1900x1080&text=Venue 1" alt="First slide">
+
+                    <div class="carousel-caption">
+                      Image of Venue 1
+                    </div>
+                  </div>
+                  <div class="item">
+                    <img src="http://placehold.it/1900x1080&text=Venue 2" alt="Second slide">
+
+                    <div class="carousel-caption">
+                      Image of Venue 2
+                    </div>
+                  </div>
+                  <div class="item">
+                    <img src="http://placehold.it/1900x1080&text=Venue 3" alt="Third slide">
+
+                    <div class="carousel-caption">
+                      Image of Venue 3
+                    </div>
+                  </div>
+                </div>
+                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                  <span class="fa fa-angle-left"></span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                  <span class="fa fa-angle-right"></span>
+                </a>
+            </div>
+            <!-- /.carousel -->
+        </div>
+        <!-- /.box-body -->
+    </div>
+    <!-- /.box -->
+
+    <!-- Marketing Section -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-fw fa-info"></i> About us</h4>
+                </div>
+                <div class="panel-body">
+                    <p>GlinnO is a system for musicians and venues to add events to a calendar system in Omaha, Nebraska. This system can be viewed by users, who can then find when and where these events are taking place. You can find more details at the link below.</p>
+                    <a href="{{site.uri.public}}/about" class="btn btn-default">Learn More</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-fw fa-user"></i> Users</h4>
+                </div>
+                <div class="panel-body">
+                    <p>As a user, you can browse events within a 1 mile radius happening the same day. You can also favorite artists or venues. Additionally, you can browse the full calendar, filtering by genre, artist, and venue.</p>
+                    <a href="{{site.uri.public}}/about" class="btn btn-default">Learn More</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-fw fa-user"></i> Artists &amp; Venues</h4>
+                </div>
+                <div class="panel-body">
+                    <p>As an artist or venue, you can add, edit or delete your own events. When doing so, you can include an event name, the location, the start and ending times, your website, and any other information you want to provide to users.</p>
+                    <a href="{{site.uri.public}}/about" class="btn btn-default">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+{% block scripts_page %}
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: false // set to false to prevent auto-advance
+    })
+    </script>
+{% endblock %}

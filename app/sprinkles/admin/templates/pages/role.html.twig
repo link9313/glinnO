@@ -1,0 +1,66 @@
+{% extends "layouts/dashboard.html.twig" %}
+
+{% block stylesheets_page %}
+    <!-- Page-group-specific CSS asset bundle -->
+    {{ assets.css('css/form-widgets') | raw }}
+{% endblock %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{translate("ROLE", 2)}} | {{role.name}}{% endblock %}
+
+{% block page_description %}{{translate("ROLE.INFO_PAGE", {name: role.name})}}{% endblock %}
+
+{% block body_matter %}
+    <div class="row">
+        <div class="col-lg-4">
+            <div id="view-role" class="box box-primary">
+                <div class="box-header">
+                    <h2 class="box-title"><i class="fa fa-fw fa-drivers-license"></i> {{role.name}}</h2>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="box-body">
+                    {% include "components/forms/role.html.twig" %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div id="widget-role-permissions" class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title"><i class="fa fa-fw fa-key"></i> {{translate('PERMISSION', 2)}}</h3>
+                    <div class="pull-right">
+                        <button class="btn btn-sm btn-default js-download-table">{{ translate("DOWNLOAD.CSV") }}</button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    {% include "components/tables/permissions.html.twig" with {
+                            "table" : {
+                                "id" : "table-role-permissions"
+                            }
+                        }
+                    %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts_page %}
+    <!-- Include page variables -->
+    <script>
+    {% include "components/page.js.twig" %}
+
+    // Add user name
+    page = $.extend(
+        true,               // deep extend
+        {
+            "role_slug": "{{role.slug}}"
+        },
+        page
+    );
+    </script>
+
+    <!-- Include form widgets JS -->
+    {{ assets.js('js/form-widgets') | raw }}
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/role') | raw }}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "layouts/default.html.twig" %}
+
+{% set page_active = "about" %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{translate("Nearby")}}{% endblock %}
+
+{% block page_description %}Find the closest events here.{% endblock %}
+
+{% block stylesheets_page %}
+    {{parent()}}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+{% endblock %}
+
+{% block body_matter %}
+    <!-- Map -->
+    <div class="row">
+        <div class="col-md-12">
+            <div id="map"></div>
+        </div>
+    </div>
+    <!-- /.row -->
+{% endblock %}
+
+{% block scripts_page %}
+    {{parent()}}
+    <script>
+      var map = L.map('map').setView([0.0, 0.0], 13);
+
+      map.locate({setView: true, maxZoom: 16, watch: true, enableHighAccuracy: true});
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+          '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        id: 'mapbox.streets'
+      }).addTo(map);
+    </script>
+
+    <script>
+        var mapmargin = 50;
+        $('#map').css("height", ($(window).height() - mapmargin));
+        $(window).on("resize", resize);
+        resize();
+        function resize() {
+            if($(window).width()>=980){
+                $('#map').css("height", ($(window).height() - mapmargin));
+                $('#map').css("margin-top",50);
+            }else{
+                $('#map').css("height", ($(window).height() - (mapmargin+12)));
+                $('#map').css("margin-top",-21);
+            }
+        }
+    </script>
+{% endblock %}
