@@ -1,0 +1,38 @@
+{% extends forcedLayout ? forcedLayout  : "layouts/default.html.twig" %}
+
+{% set page_active = "create-event" %}
+
+{% block stylesheets_page %}
+    <!-- Page-specific CSS asset bundle -->
+    {{ assets.css('css/form-widgets') | raw }}
+{% endblock %}
+
+{# Overrides blocks in head of base template #}
+{% block page_title %}{{translate("EVENT.CREATEC")}}{% endblock %}
+
+{% block page_description %}{{translate("EVENT.CREATECDESCRIPTION")}}{% endblock %}
+
+{% block body_matter %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            {% block create_event_box %}
+                <div class="box box-primary">
+                    {% include "components/forms/create-event.html.twig" %}
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
+{% block scripts_page %}
+    <!-- Include validation rules -->
+    <script>
+    {% include "components/page.js.twig" %}
+    </script>
+
+    <!-- Include form widgets JS -->
+    {{ assets.js('js/form-widgets') | raw }}
+
+    <!-- Include page-specific JS -->
+    {{ assets.js('js/pages/create-event') | raw }}
+{% endblock %}

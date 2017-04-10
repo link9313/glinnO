@@ -1,0 +1,128 @@
+<form class="js-form" method="{{form.method | default('POST')}}" action="{{site.uri.public}}/{{form.action}}">
+    {% include "components/csrf.html.twig" %}
+    <div class="js-form-alerts">
+    </div>
+    <div class="row">
+        {% if 'name' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('NAME')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-edit"></i></span>
+                    <input type="text" class="form-control" name="name" autocomplete="off" value="{{event.name}}" placeholder="{{translate('NAME')}}" {% if 'name' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'location' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('LOCATION')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-globe"></i></span>
+                    <input type="text" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate('LOCATION')}}" {% if 'location' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'date' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('DATE')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    <input type="date" class="form-control js-copy-target" name="date" value="{{event.date}}" placeholder="{{translate('DATE')}}"  {% if 'date' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'start_time' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('STARTTIME')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                    <input type="time" class="form-control js-copy-target" name="start_time" value="{{event.start_time}}" placeholder="{{translate('STARTTIME')}}" {% if 'start_time' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'end_time' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('ENDTIME')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                    <input type="time" class="form-control js-copy-target" name="end_time" value="{{event.end_time}}" placeholder="{{translate('ENDTIME')}}" {% if 'end_time' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'url' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>{{translate('URL')}}</label>
+                <div class="input-group js-copy-container">
+                    <span class="input-group-addon"><i class="fa fa-laptop"></i></span>
+                    <input type="url" class="form-control js-copy-target" name="url" value="{{event.url}}" placeholder="{{translate('URL')}}" {% if 'url' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'notes' not in form.fields.hidden %}
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="input_notes">{{translate("NOTES")}}</label>
+                <textarea id="input_notes" class="form-control" type="text" name="notes" autocomplete="off" rows=4 {% if 'notes' in form.fields.disabled %}disabled{% endif %}>{{event.notes}}</textarea>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'all_day' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-check">
+                <label class="form-check-label">{{translate('ALLDAY')}}</label>
+                    <input type="checkbox" class="form-check-input" name="all_day" value=1 {% if 'all_day' in form.fields.disabled %}disabled{% endif %}>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'flag_enabled' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-check">
+                <label class="form-check-label">{{translate('FLAGENABLED')}}</label>
+                    <input type="checkbox" class="form-check-input" name="flag_enabled" value=1 checked="checked" {% if 'flag_enabled' in form.fields.disabled %}disabled{% endif %}>
+            </div>
+        </div>
+        {% endif %}
+    </div><br>
+    <div class="row">
+        {% if form.edit_buttons %}
+            {% if 'edit' not in form.edit_buttons.hidden %}
+            <div class="col-xs-6 col-sm-3">
+                <div class="vert-pad">
+                    <button type="button" class="btn btn-block btn-md btn-primary js-event-edit" data-name="{{event.name}}">
+                        <i class="fa fa-edit"></i> {{translate('EDIT')}}
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="col-xs-8 col-sm-4">
+                <div class="vert-pad">
+                    <button type="submit" class="btn btn-block btn-lg btn-success">
+                        {{form.submit_text}}
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-3 pull-right">
+                <div class="vert-pad">
+                    <button type="button" class="btn btn-block btn-lg btn-link" data-dismiss="modal">{{translate('CANCEL')}}</button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</form>
+
+<!-- Include validation rules -->
+<script>
+{% include "components/page.js.twig" %}
+</script>

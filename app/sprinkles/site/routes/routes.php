@@ -9,8 +9,6 @@
 global $app;
 $config = $app->getContainer()->get('config');
 
-$app->get('/nearby', 'UserFrosting\Sprinkle\Site\Controller\CoreController:pageNearby');
+$app->get('/nearby', 'UserFrosting\Sprinkle\Site\Controller\SiteController:pageNearby');
 
-$app->get('/calendar', 'UserFrosting\Sprinkle\Site\Controller\CoreController:pageCalendar');
-
-$app->get('/calendar', 'UserFrosting\Sprinkle\Site\Controller\CoreController:pageCalendar');
+$app->get('/calendar', 'UserFrosting\Sprinkle\Site\Controller\SiteController:pageCalendar');

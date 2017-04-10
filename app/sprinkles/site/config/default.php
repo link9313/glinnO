@@ -7,9 +7,9 @@
     return [
         'address_book' => [
             'admin' => [
-                'name'  => 'Site Administrator'
+                'name'  => 'Nicholas Lauber (Site Administrator)'
             ]
-        ],    
+        ],
         'debug' => [
             'auth' => true
         ],
@@ -20,6 +20,6 @@
             'uri' => [
                 'author' => 'https://link9313.github.io'
             ]
-        ],   
-        'timezone' => 'America/Chicago'        
+        ],
+        'timezone' => 'America/Chicago'
     ];

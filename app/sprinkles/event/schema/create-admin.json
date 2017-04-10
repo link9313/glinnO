@@ -1,0 +1,112 @@
+{
+    "name" : {
+        "validators" : {
+            "length" : {
+                "label" : "&NAME",
+                "min" : 1,
+                "max" : 50,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            },
+            "required" : {
+                "label" : "&NAME",
+                "message" : "VALIDATE.REQUIRED"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "location" : {
+        "validators" : {
+            "length" : {
+                "label" : "&LOCATION",
+                "min" : 1,
+                "max" : 50,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            },
+            "required" : {
+                "label" : "&LOCATION",
+                "message" : "VALIDATE.REQUIRED"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "date" : {
+        "validators" : {
+            "required" : {
+                "label" : "&DATE",
+                "message" : "VALIDATE.REQUIRED"
+            },
+            "length" : {
+                "label" : "&DATE",
+                "min" : 1,
+                "max" : 50,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "start_time" : {
+        "validators" : {
+            "length" : {
+                "label" : "&STARTTIME",
+                "min" : 1,
+                "max" : 10,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "end_time" : {
+        "validators" : {
+            "length" : {
+                "label" : "&ENDTIME",
+                "min" : 1,
+                "max" : 10,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "url" : {
+        "validators" : {
+            "length" : {
+                "label" : "&URL",
+                "min" : 1,
+                "max" : 255,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            }
+        },
+        "uri" : {
+
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "notes" : {
+        "validators" : {
+            "length" : {
+                "label" : "&NOTES",
+                "min" : 1,
+                "max" : 255,
+                "message" : "VALIDATE.LENGTH_RANGE"
+            }
+        },
+        "transformations" : [
+            "purge", "escape", "purify", "trim"
+        ]
+    },
+    "all_day" : {
+    },
+    "flag_enabled" : {
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "name": "userfrosting/sprinkle-event",
+    "type": "sprinkle",
+    "description": "Administrative event management module for UserFrosting.",
+    "keywords": ["php user management", "usercake", "bootstrap"],
+    "homepage": "https://github.com/link9313",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name": "Nicholas Lauber",
+            "homepage": "https://glinno.herokuapp.com"
+        }
+    ],
+    "version": "4.0.0",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "UserFrosting\\Sprinkle\\Event\\": "src/"
+        }
+    }
+}

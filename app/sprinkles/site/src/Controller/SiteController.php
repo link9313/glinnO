@@ -11,12 +11,12 @@ namespace UserFrosting\Sprinkle\Site\Controller;
 use UserFrosting\Sprinkle\Core\Controller\SimpleController;
 
 /**
- * CoreController Class
+ * SiteController Class
  */
-class CoreController extends SimpleController
+class SiteController extends SimpleController
 {
     /**
-     * Renders terms of service page.
+     * Renders nearby map page.
      *
      * Request type: GET
      */
@@ -26,7 +26,7 @@ class CoreController extends SimpleController
     }
 
     /**
-     * Renders privacy page.
+     * Renders calendar page.
      *
      * Request type: GET
      */

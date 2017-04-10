@@ -1,0 +1,53 @@
+<form id="account-settings" role="form" action="{{site.uri.public}}/event" method="post">
+    <div class="box-header">
+        <h3 class="box-title"><i class="fa fa-gear fa-fw"></i> {{translate("EVENT.CREATEC")}}</h3>
+    </div>
+    <div class="box-body">
+        {% include "components/csrf.html.twig" %}
+        {% block create_event %}
+            <div class="form-group">
+                <label for="input-name" class="ccontrol-label">{{translate("NAME")}}</label>
+                <i class="fa fa-edit"></i>
+                <input type="text" id="input-name" class="form-control" name="name" value="{{event.name}}" placeholder="{{translate("NAME")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-location" class="ccontrol-label">{{translate("LOCATION")}}</label>
+                <i class="fa fa-globe"></i>
+                <input type="text" id="input-location" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate("LOCATION")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-date" class="ccontrol-label">{{translate("DATE")}}</label>
+                <i class="fa fa-calendar"></i>
+                <input type="date" id="input-date" class="form-control" name="date" value="{{event.date}}" placeholder="{{translate("DATE")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-start_time" class="ccontrol-label">{{translate("STARTTIME")}}</label>
+                <i class="fa fa-clock-o"></i>
+                <input type="time" id="input-start_time" class="form-control" name="start_time" value="{{event.start_time}}" placeholder="{{translate("STARTTIME")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-end_time" class="ccontrol-label">{{translate("ENDTIME")}}</label>
+                <i class="fa fa-clock-o"></i>
+                <input type="time" id="input-end_time" class="form-control" name="end_time" value="{{event.end_time}}" placeholder="{{translate("ENDTIME")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-url" class="ccontrol-label">{{translate("URL")}}</label>
+                <i class="fa fa-laptop"></i>
+                <input type="url" id="input-url" class="form-control" name="url" value="{{event.url}}" placeholder="{{translate("URL")}}" {{page.visibility}}>
+            </div>
+            <div class="form-group">
+                <label for="input-notes" class="ccontrol-label">{{translate("NOTES")}}</label>
+                <textarea type="text" id="input-notes" class="form-control" name="notes" value="{{event.notes}}" autocomplete="off" rows=4 {{page.visibility}}>{{event.notes}}</textarea>
+            </div>
+            <div class="form-check">
+                <label for="input-all_day" class="form-check-label">{{translate("ALLDAY")}}</label>
+                <input type="checkbox" id="input-all_day" class="form-check-input" name="all_day" value=1 {{page.visibility}}>
+            </div>
+        </div><br>
+        {% endblock %}
+    </div>
+    <div class="box-footer text-center">
+        <button type="reset" class="btn btn-default">{{translate('RESET')}}</button>
+        <button type="submit" class="btn btn-primary js-submit">{{translate('SAVE')}}</button>
+    </div>
+</form>

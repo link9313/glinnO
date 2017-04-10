@@ -20,7 +20,7 @@ return [
     ],
 
     "ADMIN" => [
-        "PANEL" => "Panneau admin"
+        "PANEL" => "Panneau d'administration"
     ],
 
     "CACHE" => [
@@ -89,7 +89,7 @@ return [
         "NAME"          => "Nom du rôle",
         "NAME_EXPLAIN"  => "Spécifiez le nom du rôle",
         "PAGE_DESCRIPTION"  => "Une liste des rôles de votre site. Fournit des outils de gestion pour modifier et supprimer des rôles.",
-        "UPDATE"        => "Mise à jour des rôles"
+        "UPDATED"       => "Mise à jour des rôles"
     ],
 
     "SYSTEM_INFO" => [

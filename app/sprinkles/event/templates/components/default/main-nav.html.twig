@@ -1,0 +1,10 @@
+{# This extends the same file from admin to add page and sign-up link to the "home page" nav menu. #}
+{% extends "@site/components/default/main-nav.html.twig" %}
+
+{% block main_nav %}
+    {{parent()}}
+    {% if checkAccess('create_event') %}
+    <li>
+        <a href="{{site.uri.public}}/event/create" class="nav-highlight">{{translate("EVENT.CREATEC")}}</a>
+    {% endif %}
+{% endblock %}
