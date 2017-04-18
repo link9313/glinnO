@@ -35,7 +35,8 @@ return [
         "DISABLE_SUCCESSFUL"    => "Event '{{name}}' has been successfully disabled.",
         "ENABLE_SUCCESSFUL"     => "Event '{{name}}' has been successfully enabled.",
 
-        "NAME_IN_USE" => "Event '{{name}}' is already in use."
+        "NAME_IN_USE"         => "Event '{{name}}' is already in use.",
+        "NAME_NOT_AVAILABLE"  => "Event '{{name}}' is not available."
     ],
 
     "X_Event" => [

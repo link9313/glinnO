@@ -90,7 +90,7 @@ class EventController extends SimpleController
         $throttler->logEvent('check_username_request');
 
         if ($classMapper->staticMethod('event', 'exists', $data['name'], 'name')) {
-            $message = $translator->translate('EVENT.NAME.NOT_AVAILABLE', $data);
+            $message = $translator->translate('EVENT.NAME_NOT_AVAILABLE', $data);
             return $response->write($message)->withStatus(200);
         } else {
             return $response->write('true')->withStatus(200);
