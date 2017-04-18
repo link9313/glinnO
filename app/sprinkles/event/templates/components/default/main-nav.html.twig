@@ -3,17 +3,17 @@
 
 {% block main_nav %}
     {{parent()}}
+    {% if checkAccess('create_event') %}
+    <li>
+        <a href="{{site.uri.public}}/event" class="nav-highlight">{{translate("EVENT.CREATEC")}}</a>
+    </li>
+    {% endif %}
     <li>
         <a href="{{site.uri.public}}/event/nearby" class="nav-highlight">{{translate("Nearby")}}</a>
     </li>
     <li>
         <a href="{{site.uri.public}}/event/calendar" class="nav-highlight">{{translate("Calendar")}}</a>
     </li>
-    {% if checkAccess('create_event') %}
-    <li>
-        <a href="{{site.uri.public}}/event" class="nav-highlight">{{translate("EVENT.CREATEC")}}</a>
-    </li>
-    {% endif %}
 {% endblock %}
 
 {% block secondary_nav %}
