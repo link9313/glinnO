@@ -39,8 +39,12 @@ $app->group('/modals/events', function () {
 })->add('authGuard');
 
 $app->group('/event', function () {
-  $this->get('', 'UserFrosting\Sprinkle\Event\Controller\EventController:pageCreate');
+    $this->get('', 'UserFrosting\Sprinkle\Event\Controller\EventController:pageCreate');
 
-  $this->post('', 'UserFrosting\Sprinkle\Event\Controller\EventController:create')
-      ->setName('create');
+    $this->post('', 'UserFrosting\Sprinkle\Event\Controller\EventController:create')
+        ->setName('create');
+
+    $this->get('/nearby', 'UserFrosting\Sprinkle\Event\Controller\EventController:pageNearby');
+
+    $this->get('/calendar', 'UserFrosting\Sprinkle\Event\Controller\EventController:pageCalendar');
 })->add('authGuard');

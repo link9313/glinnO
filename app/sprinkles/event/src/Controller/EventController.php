@@ -274,4 +274,24 @@ class EventController extends SimpleController
 
         return $response->withStatus(200);
     }
+
+    /**
+     * Renders nearby map page.
+     *
+     * Request type: GET
+     */
+    public function pageNearby($request, $response, $args)
+    {
+        return $this->ci->view->render($response, 'pages/nearby.html.twig');
+    }
+
+    /**
+     * Renders calendar page.
+     *
+     * Request type: GET
+     */
+    public function pageCalendar($request, $response, $args)
+    {
+        return $this->ci->view->render($response, 'pages/calendar.html.twig');
+    }
 }
