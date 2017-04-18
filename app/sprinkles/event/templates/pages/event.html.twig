@@ -34,7 +34,7 @@
                 <div class="box-body">
                     {% include "components/tables/events.html.twig" with {
                             "table" : {
-                                "id" : "table-role-permissions"
+                                "id" : "table-event"
                             }
                         }
                     %}
@@ -48,11 +48,11 @@
     <script>
     {% include "components/page.js.twig" %}
 
-    // Add user name
+    // Add name
     page = $.extend(
         true,               // deep extend
         {
-            "event_name": "{{event.name}}"
+            "name": "{{event.name}}"
         },
         page
     );

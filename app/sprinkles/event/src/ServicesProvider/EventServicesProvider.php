@@ -27,7 +27,7 @@ class EventServicesProvider
         /**
          * Extend the 'classMapper' service to register sprunje classes.
          *
-         * Mappings added: Event, 'event_sprunje'
+         * Mappings added: event, 'event_sprunje'
          */
         $container->extend('classMapper', function ($classMapper, $c) {
             $classMapper->setClassMapping('event', 'UserFrosting\Sprinkle\Event\Model\Event');

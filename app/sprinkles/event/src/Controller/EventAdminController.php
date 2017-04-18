@@ -18,6 +18,7 @@ use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Sprinkle\Account\Model\User;
+use UserFrosting\Sprinkle\Account\Model\Group;
 use UserFrosting\Sprinkle\Event\Model\Event;
 use UserFrosting\Sprinkle\Core\Controller\SimpleController;
 use UserFrosting\Sprinkle\Core\Facades\Debug;
@@ -83,7 +84,7 @@ class EventAdminController extends SimpleController
 
         // Check if event name already exists
         if ($classMapper->staticMethod('event', 'exists', $data['name'], 'name')) {
-            $ms->addMessageTranslated('danger', 'EVENTNAME.IN_USE', $data);
+            $ms->addMessageTranslated('danger', 'EVENT.NAME_IN_USE', $data);
             $error = true;
         }
 
@@ -91,16 +92,14 @@ class EventAdminController extends SimpleController
             return $response->withStatus(400);
         }
 
+        $data['creator_id'] = $currentUser->id;
+
         /** @var Config $config */
         $config = $this->ci->config;
 
         // If currentUser does not have permission to add the event, throw an exception.
-        if (!$authorizer->checkAccess($currentUser, 'create_event', [
-            'fields' => ['role_id']
-        ])) {
-            if ($currentUser->role_id != 4) {
-                throw new ForbiddenException();
-            }
+        if (!$authorizer->checkAccess($currentUser, 'create_event')) {
+            throw new ForbiddenException();
         }
 
         // All checks passed!  log events/activities, create event
@@ -113,9 +112,9 @@ class EventAdminController extends SimpleController
             $event->save();
 
             // Create activity record
-            $this->ci->eventActivityLogger->info("User {$currentUser->user_name} created a new account for {$event->name}.", [
+            $this->ci->userActivityLogger->info("User {$currentUser->user_name} created a new event for {$event->name}.", [
                 'type' => 'event_create',
-                'id' => $currentEvent->id
+                'id' => $event->id
             ]);
         });
 
@@ -151,6 +150,10 @@ class EventAdminController extends SimpleController
             throw new ForbiddenException();
         }
 
+        if ($currentUser->id != $event->creator_id) {
+            throw new ForbiddenException();
+        }
+
         /** @var Config $config */
         $config = $this->ci->config;
 
@@ -162,16 +165,16 @@ class EventAdminController extends SimpleController
             unset($event);
 
             // Create activity record
-            $this->ci->eventActivityLogger->info("User {$currentUser->user_name} deleted the event for {$eventName}.", [
-                'type' => 'account_delete',
-                'event_id' => $currentEvent->id
+            $this->ci->userActivityLogger->info("User {$currentUser->user_name} deleted the event for {$eventName}.", [
+                'type' => 'event_delete',
+                'event_id' => $event->id
             ]);
         });
 
         /** @var MessageStream $ms */
         $ms = $this->ci->alerts;
 
-        $ms->addMessageTranslated('success', 'DELETION_SUCCESSFUL', [
+        $ms->addMessageTranslated('success', 'EVENT.DELETION_SUCCESSFUL', [
             'name' => $eventName
         ]);
 
@@ -388,13 +391,13 @@ class EventAdminController extends SimpleController
 
         // Access-controlled resource - check that currentUser has permission to edit fields "name", "location", "date", "all_day", "start_time", "end_time", "url", "notes", "flag_enabled" for this event
         $fieldNames = ['name','location','date','all_day','start_time','end_time','url', 'notes', 'flag_enabled'];
+
         if (!$authorizer->checkAccess($currentUser, 'update_event_field', [
             'event' => $event,
             'fields' => $fieldNames
         ])) {
             throw new ForbiddenException();
         }
-
 
         /** @var Config $config */
         $config = $this->ci->config;
@@ -548,7 +551,7 @@ class EventAdminController extends SimpleController
     public function updateInfo($request, $response, $args)
     {
         // Get the event name from the URL
-        $event = $this->getUserFromParams($args);
+        $event = $this->getEventFromParams($args);
 
         if (!$event) {
             throw new NotFoundException($request, $response);
@@ -612,7 +615,7 @@ class EventAdminController extends SimpleController
             $data['name'] != $event->name &&
             $classMapper->staticMethod('event', 'exists', $data['name'], 'name')
         ) {
-            $ms->addMessageTranslated('danger', 'NAME.IN_USE', $data);
+            $ms->addMessageTranslated('danger', 'EVENT.NAME_IN_USE', $data);
             $error = true;
         }
 
@@ -638,7 +641,7 @@ class EventAdminController extends SimpleController
             ]);
         });
 
-        $ms->addMessageTranslated('success', 'DETAILS_UPDATED', [
+        $ms->addMessageTranslated('success', 'EVENT.DETAILS_UPDATED', [
             'name' => $event->name
         ]);
         return $response->withStatus(200);
@@ -658,7 +661,7 @@ class EventAdminController extends SimpleController
     public function updateField($request, $response, $args)
     {
         // Get the event name from the URL
-        $event = $this->getUserFromParams($args);
+        $event = $this->getEventFromParams($args);
 
         if (!$event) {
             throw new NotFoundException($request, $response);
@@ -742,16 +745,16 @@ class EventAdminController extends SimpleController
         // Add success messages
         if ($fieldName == 'flag_enabled') {
             if ($fieldValue == '1') {
-                $ms->addMessageTranslated('success', 'ENABLE_SUCCESSFUL', [
+                $ms->addMessageTranslated('success', 'EVENT.ENABLE_SUCCESSFUL', [
                     'name' => $event->name
                 ]);
             } else {
-                $ms->addMessageTranslated('success', 'DISABLE_SUCCESSFUL', [
+                $ms->addMessageTranslated('success', 'EVENT.DISABLE_SUCCESSFUL', [
                     'name' => $event->name
                 ]);
             }
         } else {
-            $ms->addMessageTranslated('success', 'DETAILS_UPDATED', [
+            $ms->addMessageTranslated('success', 'EVENT.DETAILS_UPDATED', [
                 'name' => $event->name
             ]);
         }

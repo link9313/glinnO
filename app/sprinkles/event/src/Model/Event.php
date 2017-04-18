@@ -17,7 +17,6 @@ use UserFrosting\Sprinkle\Core\Model\UFModel;
  * Event Class
  *
  * Represents an Event object as stored in the database.
- *
  * @author Nicholas Lauber
  * @property int id
  * @property string name
@@ -30,7 +29,9 @@ use UserFrosting\Sprinkle\Core\Model\UFModel;
  * @property string notes
  * @property bool flag_enabled
  * @property int creator_id
- * @property timestamp deletedAt
+ * @property timestamp created_at
+ * @property timestamp updated_at
+ * @property timestamp deleted_at
  */
 class Event extends UFModel
 {
@@ -53,7 +54,9 @@ class Event extends UFModel
         "notes",
         "flag_enabled",
         "creator_id",
-        "deletedAt"
+        "created_at",
+        "updated_at",
+        "deleted_at"
     ];
 
     /**
@@ -61,48 +64,12 @@ class Event extends UFModel
      *
      * @var array
      */
-    protected $dates = ['date', 'deletedAt'];
+    protected $dates = ['deleted_at'];
 
     /**
      * @var bool Enable timestamps for Events.
      */
     public $timestamps = true;
-
-    /**
-     * Determine if the property for this object exists.
-     * We add relations here so that Twig will be able to find them.
-     * See http://stackoverflow.com/questions/29514081/cannot-access-eloquent-attributes-on-twig/35908957#35908957
-     * Every property in __get must also be implemented here for Twig to recognize it.
-     * @param string $name the name of the property to check.
-     * @return bool true if the property is defined, false otherwise.
-     */
-    public function __isset($name)
-    {
-        return parent::__isset($name);
-    }
-
-    /**
-     * Get a property for this object.
-     *
-     * @param string $name the name of the property to retrieve.
-     * @throws Exception the property does not exist for this object.
-     * @return string the associated property.
-     */
-    public function __get($name)
-    {
-        return parent::__get($name);
-    }
-
-    /**
-     * Get all activities for this user.
-     */
-    public function activities()
-    {
-        /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
-        $classMapper = static::$ci->classMapper;
-
-        return $this->hasMany($classMapper->getClassMapping('activity'), 'creator_id');
-    }
 
     /**
      * Delete this event from the database, along with any linked activities.

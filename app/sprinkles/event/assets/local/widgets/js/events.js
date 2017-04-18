@@ -104,14 +104,19 @@ function updateEvent(eventName, fieldName, fieldValue) {
     /**
      * Direct action buttons
      */
+    el.find('.js-event-activate').click(function() {
+        var btn = $(this);
+        updateUser(btn.data('name'), 'flag_verified', '1');
+    });
+
     el.find('.js-event-enable').click(function () {
         var btn = $(this);
-        updateEvent(btn.data('name'), 'flag_enabled', TRUE);
+        updateUser(btn.data('name'), 'flag_enabled', '1');
     });
 
     el.find('.js-event-disable').click(function () {
         var btn = $(this);
-        updateEvent(btn.data('name'), 'flag_enabled', FALSE);
+        updateUser(btn.data('name'), 'flag_enabled', '0');
     });
 }
 

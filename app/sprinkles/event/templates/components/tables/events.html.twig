@@ -13,7 +13,7 @@
             <tr>
                 <th class="sorter-metatext" data-column-name="name" data-column-template="#event-table-column-info">{{translate('EVENT')}} <i class="fa fa-sort"></i></th>
                 <th class="sorter-metatext" data-column-name="notes" data-column-template="#event-table-column-notes">{{translate('NOTE')}} <i class="fa fa-sort"></i></th>
-                <th data-column-template="#event-table-column-actions" data-sorter="false" data-filter="false">{{translate('ACTIONS')}}</th>
+                <th data-column-name="flag_enabled" data-column-template="#event-table-column-actions" data-sorter="false" data-filter="false">{{translate('ACTIONS')}}</th>
             </tr>
         </thead>
         <tbody>
@@ -46,11 +46,32 @@
     <script id="event-table-column-actions" type="text/x-handlebars-template">
         <td>
             <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                    {% endverbatim %}{{translate("ACTIONS")}}{% verbatim %}
-                    <span class="caret"></span>
-                </button>
+                {{#ifCond row.flag_enabled 0 }}
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        {% endverbatim %}{{translate("DISABLED")}}{% verbatim %}
+                        <span class="caret"></span>
+                    </button>
+                {{ else }}
+                    {{#ifCond row.flag_verified 0 }}
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                            {% endverbatim %}{{translate("UNACTIVATED")}}{% verbatim %}
+                            <span class="caret"></span>
+                        </button>
+                    {{ else }}
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            {% endverbatim %}{{translate("ACTIVE")}}{% verbatim %}
+                            <span class="caret"></span>
+                        </button>
+                    {{/ifCond }}
+                {{/ifCond }}
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    {{#ifCond row.flag_verified 0 }}
+                    <li>
+                        <a href="#" data-name="{{row.name}}" class="js-event-activate">
+                        <i class="fa fa-bolt"></i> {% endverbatim %}{{translate("EVENT.ACTIVATE")}}{% verbatim %}
+                        </a>
+                    </li>
+                    {{/ifCond }}
                     <li>
                         <a href="#" data-name="{{row.name}}" class="js-event-edit">
                         <i class="fa fa-edit"></i> {% endverbatim %}{{translate("EVENT.EDIT")}}{% verbatim %}

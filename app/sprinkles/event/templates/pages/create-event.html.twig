@@ -25,9 +25,18 @@
     </div>
 {% endblock %}
 {% block scripts_page %}
-    <!-- Include validation rules -->
+    <!-- Include page variables -->
     <script>
     {% include "components/page.js.twig" %}
+
+    // Add name
+    page = $.extend(
+        true,               // deep extend
+        {
+            "name": "{{event.name}}"
+        },
+        page
+    );
     </script>
 
     <!-- Include form widgets JS -->
