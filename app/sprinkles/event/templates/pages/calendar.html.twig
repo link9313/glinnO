@@ -25,7 +25,10 @@
         </div>
         <div class="col-md-4">
             <div class="dropdown">
-		<a href="https://localhost/glinno/public/event" class="btn btn-default btn-lg btn-block btn-flat" type="button">Create Event</a>
+                {% if checkAccess('create_event') %}
+		            <a href="https://localhost/glinno/public/event" class="btn btn-default btn-lg btn-block btn-flat" type="button">Create Event</a>
+                {% endif %}
+
                 <button class="btn btn-default btn-lg btn-block btn-flat dropdown-toggle" type="button" id="categories" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category<span class="caret"></span></button>
                 <ul class="dropdown-menu" aria-labelledby="categories">
                     <li><a href="#">All</a></li>
@@ -125,83 +128,83 @@
                     $('#fullCalModal').modal();
                 },
 
-                /*events: {
+                /* events: {
                     url: '/api/events/calendar',
                     type: 'POST',
                     data: {},
                     error: function() {
                         $('#errorModal').modal();
                     }
-                }*/
+                } */
 
                 events: [
                     {
                         title: 'UNO Jazz 1',
                         location: 'The Slowdown',
-                        start: '2017-04-01T20:00:00',
-                        end: '2017-04-01T21:00:00'
+                        start: '2017-05-01T20:00:00',
+                        end: '2017-05-01T21:00:00'
                     },
                     {
                         title: 'UNO Jazz 2',
                         location: 'The Slowdown',
-                        start: '2017-04-07T19:00:00',
-                        end: '2017-04-07T20:00:00'
+                        start: '2017-05-07T19:00:00',
+                        end: '2017-05-07T20:00:00'
                     },
                     {
                         title: 'The SuperBytes',
                         location: 'The Slowdown',
-                        start: '2017-04-09T20:00:00',
-                        end: '2017-04-09T21:00:00'
+                        start: '2017-05-09T20:00:00',
+                        end: '2017-05-09T21:00:00'
                     },
                     {
                         title: 'Kennedy Jones',
                         location: 'The Slowdown',
-                        start: '2017-04-09T21:00:00',
-                        end: '2017-04-09T22:00:00'
+                        start: '2017-05-09T21:00:00',
+                        end: '2017-05-09T22:00:00'
                     },
                     {
                         title: 'Clark & Company',
                         location: 'The Slowdown',
-                        start: '2017-04-11T21:00:00',
-                        end: '2017-04-11T22:00:00'
+                        start: '2017-05-11T21:00:00',
+                        end: '2017-05-11T22:00:00'
                     },
                     {
                         title: 'The Sonics',
                         location: 'The Slowdown',
-                        start: '2017-04-11T22:00:00',
-                        end: '2017-04-11T23:00:00'
+                        start: '2017-05-11T22:00:00',
+                        end: '2017-05-11T23:00:00'
                     },
                     {
                         title: 'Excision',
                         location: 'The Slowdown',
-                        start: '2017-04-17T19:00:00',
-                        end: '2017-04-17T20:00:00'
+                        start: '2017-05-17T19:00:00',
+                        end: '2017-05-17T20:00:00'
                     },
                     {
                         title: 'Flocian',
                         location: 'The Slowdown',
-                        start: '2017-04-17T20:00:00',
-                        end: '2017-04-17T21:00:00'
+                        start: '2017-05-17T20:00:00',
+                        end: '2017-05-17T21:00:00'
                     },
                     {
                         title: '8BLOCC',
                         location: 'The Slowdown',
-                        start: '2017-04-17T22:00:00',
-                        end: '2017-04-17T23:00:00'
+                        start: '2017-05-17T22:00:00',
+                        end: '2017-05-17T23:00:00'
                     },
                     {
                         title: 'The Sonics',
                         location: 'Location: The Slowdown',
-			date: 'Date: April 21, 2017',
-			times: 'Time: 10:00pm-11:00pm',
-                        start: '2017-04-21T22:00:00',
-                        end: '2017-04-21T23:00:00'
+			                  date: 'Date: April 21, 2017',
+			                  times: 'Time: 10:00pm-11:00pm',
+                        start: '2017-05-21T22:00:00',
+                        end: '2017-05-21T23:00:00'
                     },
                     {
                         title: 'The SuperBytes',
                         location: 'The Slowdown',
-                        start: '2017-04-26T20:00:00',
-                        end: '2017-04-26T21:00:00'
+                        start: '2017-05-26T20:00:00',
+                        end: '2017-05-26T21:00:00'
                     }
                 ]
             });

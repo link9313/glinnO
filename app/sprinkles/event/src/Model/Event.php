@@ -21,10 +21,9 @@ use UserFrosting\Sprinkle\Core\Model\UFModel;
  * @property int id
  * @property string name
  * @property string location
- * @property date date
+ * @property dateTime start
+ * @property dateTime end
  * @property bool all_day
- * @property time start_time
- * @property time end_time
  * @property string url
  * @property string notes
  * @property bool flag_enabled

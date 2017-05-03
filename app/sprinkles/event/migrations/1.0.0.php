@@ -12,10 +12,9 @@
             $table->increments('id');
             $table->string('name', 50);
             $table->string('location', 50);
-            $table->date('date');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->boolean('all_day')->default(0)->comment("Set to 1 if the event lasts all day.");
-            $table->time('start_time');
-            $table->time('end_time');
             $table->string('url', 50);
             $table->string('notes', 255);
             $table->boolean('flag_enabled')->default(0)->comment("Set to 1 if the event is currently enabled, 0 otherwise.");
@@ -38,7 +37,7 @@
     /**
      * Roles replace "groups" in UF 0.3.x.  Users acquire permissions through roles.
      */
-    if ($schema->hasTable('roles') && !Role::where('name', '=', 'contributor')) {
+    if (!$schema->hasTable('roles') && !Role::where('name', '=', 'contributor')) {
         // Add new role
         $roles = [
             'contributor' => new Role([
@@ -59,7 +58,7 @@
      * Permissions now replace the 'authorize_group' and 'authorize_user' tables.
      * Also, they now map many-to-many to roles.
      */
-    if ($schema->hasTable('permissions')) {
+    if (!$schema->hasTable('permissions')) {
         $defaultRoleIds = [
             'user' => Role::where('slug', 'user')->first()->id,
             'group-admin' => Role::where('slug', 'group-admin')->first()->id,

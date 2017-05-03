@@ -25,35 +25,24 @@
             </div>
         </div>
         {% endif %}
-        {% if 'date' not in form.fields.hidden %}
+        {% if 'start' not in form.fields.hidden %}
         <div class="col-sm-6">
             <div class="form-group">
-                <label>{{translate('DATE')}}</label>
+                <label>{{translate('START')}}</label>
                 <div class="input-group js-copy-container">
-                    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input type="date" class="form-control js-copy-target" name="date" value="{{event.date}}" placeholder="{{translate('DATE')}}"  {% if 'date' in form.fields.disabled %}disabled{% endif %}>
+                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                    <input type="datetime-local" class="form-control js-copy-target" name="start" value="{{event.start}}" placeholder="{{translate('START')}}" {% if 'start' in form.fields.disabled %}disabled{% endif %}>
                 </div>
             </div>
         </div>
         {% endif %}
-        {% if 'start_time' not in form.fields.hidden %}
+        {% if 'end' not in form.fields.hidden %}
         <div class="col-sm-6">
             <div class="form-group">
-                <label>{{translate('STARTTIME')}}</label>
+                <label>{{translate('END')}}</label>
                 <div class="input-group js-copy-container">
                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                    <input type="time" class="form-control js-copy-target" name="start_time" value="{{event.start_time}}" placeholder="{{translate('STARTTIME')}}" {% if 'start_time' in form.fields.disabled %}disabled{% endif %}>
-                </div>
-            </div>
-        </div>
-        {% endif %}
-        {% if 'end_time' not in form.fields.hidden %}
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label>{{translate('ENDTIME')}}</label>
-                <div class="input-group js-copy-container">
-                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                    <input type="time" class="form-control js-copy-target" name="end_time" value="{{event.end_time}}" placeholder="{{translate('ENDTIME')}}" {% if 'end_time' in form.fields.disabled %}disabled{% endif %}>
+                    <input type="datetime-local" class="form-control js-copy-target" name="end" value="{{event.end}}" placeholder="{{translate('END')}}" {% if 'end' in form.fields.disabled %}disabled{% endif %}>
                 </div>
             </div>
         </div>
@@ -69,19 +58,20 @@
             </div>
         </div>
         {% endif %}
+        {% if 'all_day' not in form.fields.hidden %}
+        <div class="col-sm-6">
+            <div class="form-check">
+                <br>
+                <label class="form-check-label">{{translate('ALLDAY')}}</label>
+                <input type="checkbox" class="form-check-input" name="all_day" value=1 {% if 'all_day' in form.fields.disabled %}disabled{% endif %}>
+            </div>
+        </div>
+        {% endif %}
         {% if 'notes' not in form.fields.hidden %}
         <div class="col-sm-12">
             <div class="form-group">
                 <label for="input_notes">{{translate("NOTES")}}</label>
                 <textarea id="input_notes" class="form-control" type="text" name="notes" autocomplete="off" rows=4 {% if 'notes' in form.fields.disabled %}disabled{% endif %}>{{event.notes}}</textarea>
-            </div>
-        </div>
-        {% endif %}
-        {% if 'all_day' not in form.fields.hidden %}
-        <div class="col-sm-6">
-            <div class="form-check">
-                <label class="form-check-label">{{translate('ALLDAY')}}</label>
-                    <input type="checkbox" class="form-check-input" name="all_day" value=1 {% if 'all_day' in form.fields.disabled %}disabled{% endif %}>
             </div>
         </div>
         {% endif %}

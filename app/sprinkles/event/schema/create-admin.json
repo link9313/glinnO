@@ -33,14 +33,14 @@
             "purge", "escape", "purify", "trim"
         ]
     },
-    "date" : {
+    "start" : {
         "validators" : {
             "required" : {
                 "label" : "&DATE",
                 "message" : "VALIDATE.REQUIRED"
             },
             "length" : {
-                "label" : "&DATE",
+                "label" : "&STARTTIME",
                 "min" : 1,
                 "max" : 50,
                 "message" : "VALIDATE.LENGTH_RANGE"
@@ -50,21 +50,12 @@
             "purge", "escape", "purify", "trim"
         ]
     },
-    "start_time" : {
+    "end" : {
         "validators" : {
-            "length" : {
-                "label" : "&STARTTIME",
-                "min" : 1,
-                "max" : 10,
-                "message" : "VALIDATE.LENGTH_RANGE"
-            }
-        },
-        "transformations" : [
-            "purge", "escape", "purify", "trim"
-        ]
-    },
-    "end_time" : {
-        "validators" : {
+            "required" : {
+                "label" : "&DATE",
+                "message" : "VALIDATE.REQUIRED"
+            },
             "length" : {
                 "label" : "&ENDTIME",
                 "min" : 1,

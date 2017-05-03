@@ -265,6 +265,29 @@ class EventController extends SimpleController
     }
 
     /**
+     * Returns a list of Events
+     *
+     * Generates a list of events, optionally paginated, sorted and/or filtered.
+     * This page requires authentication.
+     * Request type: GET
+     */
+    public function getCalendar($request, $response, $args)
+    {
+        $event = $this->getEventFromParams($args);
+
+        // If the event doesn't exist, return 404
+        if (!$event) {
+            throw new NotFoundException($request, $response);
+        }
+
+        $result = $event->toArray();
+
+        // Be careful how you consume this data - it has not been escaped and contains untrusted user-supplied content.
+        // For example, if you plan to insert it into an HTML DOM, you must escape it on the client side (or use client-side templating).
+        return $response->withJson($result, 200, JSON_PRETTY_PRINT);
+    }
+
+    /**
      * Renders nearby map page.
      *
      * Request type: GET

@@ -23,6 +23,8 @@ $app->group('/api/events', function () {
 
     $this->get('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:getInfo');
 
+    $this->get('/cal', 'UserFrosting\Sprinkle\Event\Controller\EventController:getCalendar');
+
     $this->post('', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:create');
 
     $this->put('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:updateInfo');

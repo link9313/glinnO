@@ -47,8 +47,8 @@ return [
 
     "LOCATION" => "Location (Street Address)",
     "DATE" => "Date",
-    "STARTTIME" => "Start Time",
-    "ENDTIME" => "End Time",
+    "START" => "Start Date & Time",
+    "END" => "End Date & Time",
     "URL" => "URL",
     "NOTES" => "Notes",
     "ALLDAY" => "All Day",
