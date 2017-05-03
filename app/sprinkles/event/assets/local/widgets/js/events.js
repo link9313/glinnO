@@ -37,7 +37,7 @@ function updateEvent(eventName, fieldName, fieldValue) {
     data[site.csrf.keys.name] = site.csrf.name;
     data[site.csrf.keys.value] = site.csrf.value;
 
-    var url = site.uri.public + '/api/events/e/' + id+ '/' + fieldName;
+    var url = site.uri.public + '/api/events/e/' + id + '/' + fieldName;
 
     return $.ajax({
         type: "PUT",
@@ -84,7 +84,7 @@ function updateEvent(eventName, fieldName, fieldValue) {
         $("body").ufModal({
             sourceUrl: site.uri.public + "/modals/events/confirm-delete",
             ajaxParams: {
-                name: $(this).data('name')
+                name: $(this).data('id')
             },
             msgTarget: $("#alerts-page")
         });
@@ -106,17 +106,17 @@ function updateEvent(eventName, fieldName, fieldValue) {
      */
     el.find('.js-event-activate').click(function() {
         var btn = $(this);
-        updateUser(btn.data('name'), 'flag_verified', '1');
+        updateUser(btn.data('id'), 'flag_verified', '1');
     });
 
     el.find('.js-event-enable').click(function () {
         var btn = $(this);
-        updateUser(btn.data('name'), 'flag_enabled', '1');
+        updateUser(btn.data('id'), 'flag_enabled', '1');
     });
 
     el.find('.js-event-disable').click(function () {
         var btn = $(this);
-        updateUser(btn.data('name'), 'flag_enabled', '0');
+        updateUser(btn.data('id'), 'flag_enabled', '0');
     });
 }
 

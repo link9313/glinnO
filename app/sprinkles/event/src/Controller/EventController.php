@@ -72,22 +72,11 @@ class EventController extends SimpleController
             throw $e;
         }
 
-        /** @var UserFrosting\Sprinkle\Core\Throttle\Throttler $throttler */
-        $throttler = $this->ci->throttler;
-        $delay = $throttler->getDelay('check_name_request');
-
-        // Throttle requests
-        if ($delay > 0) {
-            return $response->withStatus(429);
-        }
-
         /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
         $classMapper = $this->ci->classMapper;
 
         $translator = $this->ci->translator;
 
-        // Log throttleable event
-        $throttler->logEvent('check_username_request');
 
         if ($classMapper->staticMethod('event', 'exists', $data['name'], 'name')) {
             $message = $translator->translate('EVENT.NAME_NOT_AVAILABLE', $data);

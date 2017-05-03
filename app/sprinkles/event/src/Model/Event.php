@@ -84,7 +84,7 @@ class Event extends UFModel
 
         if ($hardDelete) {
             // Remove all user activities
-            $classMapper->staticMethod('activity', 'where', 'user_id', $this->creator_id, '&&', 'id', $this->id)->delete();
+            $classMapper->staticMethod('activity', 'where', 'creator_id', $this->creator_id, '&&', 'id', $this->id)->delete();
 
             // TODO: remove any persistences
 

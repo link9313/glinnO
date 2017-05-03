@@ -13,21 +13,21 @@ $app->group('/admin/events', function () {
     $this->get('', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:pageList')
         ->setName('uri_events');
 
-    $this->get('/e/{name}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:pageInfo');
+    $this->get('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:pageInfo');
 })->add('authGuard');
 
 $app->group('/api/events', function () {
-    $this->delete('/e/{name}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:delete');
+    $this->delete('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:delete');
 
     $this->get('', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:getList');
 
-    $this->get('/e/{name}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:getInfo');
+    $this->get('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:getInfo');
 
     $this->post('', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:create');
 
-    $this->put('/e/{name}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:updateInfo');
+    $this->put('/e/{id}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:updateInfo');
 
-    $this->put('/e/{name}/{field}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:updateField');
+    $this->put('/e/{id}/{field}', 'UserFrosting\Sprinkle\Event\Controller\EventAdminController:updateField');
 })->add('authGuard');
 
 $app->group('/modals/events', function () {

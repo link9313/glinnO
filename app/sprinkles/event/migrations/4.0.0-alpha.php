@@ -18,7 +18,7 @@
             $table->time('end_time');
             $table->string('url', 50);
             $table->string('notes', 255);
-            $table->boolean('flag_enabled')->default(0)->comment("Set to 1 if the event is currently enabled, 0 otherwise.  Disabled accounts cannot be logged in to, but they retain all of their data and settings.");
+            $table->boolean('flag_enabled')->default(0)->comment("Set to 1 if the event is currently enabled, 0 otherwise.");
             $table->integer('creator_id');
             $table->softDeletes();
             $table->timestamps();
@@ -38,7 +38,7 @@
     /**
      * Roles replace "groups" in UF 0.3.x.  Users acquire permissions through roles.
      */
-    if ($schema->hasTable('roles')) {
+    if ($schema->hasTable('roles') && !Role::where('name', '=', 'contributor')) {
         // Add new role
         $roles = [
             'contributor' => new Role([

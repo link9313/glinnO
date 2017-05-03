@@ -18,7 +18,6 @@ use UserFrosting\Fortress\RequestSchema;
 use UserFrosting\Fortress\ServerSideValidator;
 use UserFrosting\Fortress\Adapter\JqueryValidationAdapter;
 use UserFrosting\Sprinkle\Account\Model\User;
-use UserFrosting\Sprinkle\Account\Model\Group;
 use UserFrosting\Sprinkle\Event\Model\Event;
 use UserFrosting\Sprinkle\Core\Controller\SimpleController;
 use UserFrosting\Sprinkle\Core\Facades\Debug;
@@ -93,6 +92,9 @@ class EventAdminController extends SimpleController
         }
 
         $data['creator_id'] = $currentUser->id;
+        $data['name'] = html_entity_decode($data['name'], ENT_QUOTES);
+        $data['location'] = html_entity_decode($data['location'], ENT_QUOTES);
+        $data['notes'] = html_entity_decode($data['notes'], ENT_QUOTES);
 
         /** @var Config $config */
         $config = $this->ci->config;
@@ -290,7 +292,7 @@ class EventAdminController extends SimpleController
         return $this->ci->view->render($response, 'components/modals/confirm-delete-event.html.twig', [
             'event' => $event,
             'form' => [
-                'action' => "api/events/e/{$event->name}",
+                'action' => "api/events/e/{$event->id}",
             ]
         ]);
     }
@@ -415,7 +417,7 @@ class EventAdminController extends SimpleController
         return $this->ci->view->render($response, 'components/modals/event.html.twig', [
             'event' => $event,
             'form' => [
-                'action' => "api/events/e/{$event->name}",
+                'action' => "api/events/e/{$event->id}",
                 'method' => 'PUT',
                 'fields' => $fields,
                 'submit_text' => 'Update event'
@@ -727,13 +729,8 @@ class EventAdminController extends SimpleController
 
         // Begin transaction - DB will be rolled back if an exception occurs
         Capsule::transaction( function() use ($fieldName, $fieldValue, $event, $currentUser) {
-            if ($fieldName == "roles") {
-                $newRoles = collect($fieldValue)->pluck('role_id')->all();
-                $event->roles()->sync($newRoles);
-            } else {
-                $event->$fieldName = $fieldValue;
-                $event->save();
-            }
+            $event->$fieldName = $fieldValue;
+            $event->save();
 
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} updated property '$fieldName' for event {$event->name}.", [
