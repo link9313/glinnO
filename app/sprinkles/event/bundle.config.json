@@ -1,18 +1,5 @@
 {
     "bundle": {
-        "js/pages/event": {
-            "scripts": [
-                "local/widgets/js/events.js",
-                "local/pages/js/event.js"
-            ],
-            "options": {
-                "result": {
-                    "type": {
-                        "scripts": "plain"
-                    }
-                }
-            }
-        },
         "js/pages/events": {
             "scripts": [
                 "local/widgets/js/events.js",
@@ -26,9 +13,9 @@
                 }
             }
         },
-        "js/pages/create-event": {
+        "js/pages/contrib-event": {
             "scripts": [
-                "local/pages/js/create-event.js"
+                "local/pages/js/contrib-event.js"
             ],
             "options": {
                 "result": {

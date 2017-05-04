@@ -113,7 +113,7 @@ class EventController extends SimpleController
         /** @var Config $config */
         $config = $this->ci->config;
 
-        return $this->ci->view->render($response, 'pages/create-event.html.twig', [
+        return $this->ci->view->render($response, 'pages/contrib-event.html.twig', [
             "page" => [
                 "validators" => [
                     "create_event"    => $validatorAccountSettings->rules('json', false)
@@ -150,7 +150,7 @@ class EventController extends SimpleController
         /** @var Config $config */
         $config = $this->ci->config;
 
-        return $this->ci->view->render($response, 'pages/create-event.html.twig', [
+        return $this->ci->view->render($response, 'pages/contrib-event.html.twig', [
             'event' => $event,
             'form' => [
                 'action' => "api/events/e/{$event->id}",
@@ -202,7 +202,7 @@ class EventController extends SimpleController
         }
 
         // Load the request schema
-        $schema = new RequestSchema('schema:///create.json');
+        $schema = new RequestSchema('schema://create.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);

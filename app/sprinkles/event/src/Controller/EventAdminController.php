@@ -63,7 +63,7 @@ class EventAdminController extends SimpleController
         $ms = $this->ci->alerts;
 
         // Load the request schema
-        $schema = new RequestSchema('schema:///create.json');
+        $schema = new RequestSchema('schema://create.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);
@@ -342,7 +342,7 @@ class EventAdminController extends SimpleController
         $event = $classMapper->createInstance('event', $data);
 
         // Load validation rules
-        $schema = new RequestSchema('schema:///create.json');
+        $schema = new RequestSchema('schema://create.json');
         $validator = new JqueryValidationAdapter($schema, $this->ci->translator);
 
         return $this->ci->view->render($response, 'components/modals/event.html.twig', [
@@ -411,7 +411,7 @@ class EventAdminController extends SimpleController
         ];
 
         // Load validation rules
-        $schema = new RequestSchema('schema:///edit-info.json');
+        $schema = new RequestSchema('schema://edit-info.json');
         $validator = new JqueryValidationAdapter($schema, $this->ci->translator);
 
         return $this->ci->view->render($response, 'components/modals/event.html.twig', [
@@ -481,7 +481,7 @@ class EventAdminController extends SimpleController
         $ms = $this->ci->alerts;
 
         // Load the request schema
-        $schema = new RequestSchema('schema:///edit-info.json');
+        $schema = new RequestSchema('schema://edit-info.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);
@@ -567,8 +567,7 @@ class EventAdminController extends SimpleController
      * Supports editing all event fields, including password, enabled/disabled status and verification status.
      * Processes the request from the event update form, checking that:
      * 1. The logged-in user has the necessary permissions to update the putted field(s);
-     * 2. We're not trying to disable the master account;
-     * 3. The submitted data is valid.
+     * 2. The submitted data is valid.
      * This route requires authentication.
      * Request type: PUT
      */
@@ -577,7 +576,7 @@ class EventAdminController extends SimpleController
         // Get the event id from the URL
         $event = $this->getEventFromParams($args);
 
-        if ($event) {
+        if (!$event) {
             throw new NotFoundException($request, $response);
         }
 
@@ -614,7 +613,7 @@ class EventAdminController extends SimpleController
         ];
 
         // Load the request schema
-        $schema = new RequestSchema('schema:///edit-field.json');
+        $schema = new RequestSchema('schema://edit-field.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);
@@ -674,7 +673,7 @@ class EventAdminController extends SimpleController
     /*protected function getEventFromParams($params)
     {
         // Load the request schema
-        $schema = new RequestSchema('schema:///get-by-name.json');
+        $schema = new RequestSchema('schema://get-by-name.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);
@@ -706,7 +705,7 @@ class EventAdminController extends SimpleController
     protected function getEventFromParams($params)
     {
         // Load the request schema
-        $schema = new RequestSchema('schema:///get-by-id.json');
+        $schema = new RequestSchema('schema://get-by-id.json');
 
         // Whitelist and set parameter defaults
         $transformer = new RequestDataTransformer($schema);

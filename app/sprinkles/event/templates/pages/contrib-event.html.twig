@@ -1,6 +1,6 @@
 {% extends forcedLayout ? forcedLayout  : "layouts/default.html.twig" %}
 
-{% set page_active = "create-event" %}
+{% set page_active = "contrib-event" %}
 
 {% block stylesheets_page %}
     <!-- Page-specific CSS asset bundle -->
@@ -18,7 +18,7 @@
         <div class="col-lg-12">
             {% block create_event_box %}
                 <div class="box box-primary">
-                    {% include "components/forms/create-event.html.twig" %}
+                    {% include "components/forms/contrib-event.html.twig" %}
                 </div>
             {% endblock %}
         </div>
@@ -43,5 +43,5 @@
     {{ assets.js('js/form-widgets') | raw }}
 
     <!-- Include page-specific JS -->
-    {{ assets.js('js/pages/create-event') | raw }}
+    {{ assets.js('js/pages/contrib-event') | raw }}
 {% endblock %}

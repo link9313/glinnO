@@ -4,7 +4,7 @@
  *
  * This script depends on widgets/events.js, uf-table.js, moment.js, handlebars-helpers.js
  *
- * Target page: /events
+ * Target page: /admin/events
  */
 
 $(document).ready(function() {

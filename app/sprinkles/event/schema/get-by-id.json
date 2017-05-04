@@ -1,4 +1,10 @@
 {
     "id" : {
+        "validators" : {
+            "required" : {
+                "label" : "&ID",
+                "message" : "VALIDATE.REQUIRED"
+            }
+        }
     }
 }
