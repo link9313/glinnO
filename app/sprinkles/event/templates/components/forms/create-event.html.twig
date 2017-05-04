@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label for="input-location" class="ccontrol-label">{{translate("LOCATION")}}</label>
                     <i class="fa fa-globe"></i>
-                    <input type="datetime-local" id="input-location" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate("LOCATION")}}" {{page.visibility}}>
+                    <input type="text" id="input-location" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate("LOCATION")}}" {{page.visibility}}>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label for="input-end" class="ccontrol-label">{{translate("END")}}</label>
                     <i class="fa fa-clock-o"></i>
-                    <input type="text" id="input-end" class="form-control" name="end" value="{{event.end}}" placeholder="{{translate("DATESAMPLE")}}" {{page.visibility}}>
+                    <input type="datetime-local" id="input-end" class="form-control" name="end" value="{{event.end}}" placeholder="{{translate("DATESAMPLE")}}" {{page.visibility}}>
                 </div>
             </div>
             <div class="col-sm-6">
