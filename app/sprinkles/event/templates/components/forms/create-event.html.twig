@@ -1,4 +1,4 @@
-<form id="js-form" role="form" action="{{site.uri.public}}/event" method="post">
+<form id="create-event" role="form" action="{{site.uri.public}}/events" method="POST">
     <div class="box-header">
         <h3 class="box-title"><i class="fa fa-calendar fa-fw"></i> {{translate("EVENT.CREATEC")}}</h3>
     </div>
@@ -16,21 +16,21 @@
                 <div class="form-group">
                     <label for="input-location" class="ccontrol-label">{{translate("LOCATION")}}</label>
                     <i class="fa fa-globe"></i>
-                    <input type="text" id="input-location" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate("LOCATION")}}" {{page.visibility}}>
+                    <input type="datetime-local" id="input-location" class="form-control" name="location" value="{{event.location}}" placeholder="{{translate("LOCATION")}}" {{page.visibility}}>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="input-start" class="ccontrol-label">{{translate("START")}}</label>
                     <i class="fa fa-clock-o"></i>
-                    <input type="datetime-local" id="input-start" class="form-control" name="start" value="{{event.start}}" placeholder="{{translate("START")}}" {{page.visibility}}>
+                    <input type="datetime-local" id="input-start" class="form-control" name="start" value="{{event.start}}" placeholder="{{translate("DATESAMPLE")}}" {{page.visibility}}>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label for="input-end" class="ccontrol-label">{{translate("END")}}</label>
                     <i class="fa fa-clock-o"></i>
-                    <input type="datetime-local" id="input-end" class="form-control" name="end" value="{{event.end}}" placeholder="{{translate("END")}}" {{page.visibility}}>
+                    <input type="text" id="input-end" class="form-control" name="end" value="{{event.end}}" placeholder="{{translate("DATESAMPLE")}}" {{page.visibility}}>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -41,10 +41,11 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <div class="form-group">
-                    <br>
+                <div class="form-check">
                     <label for="input-all_day" class="form-check-label">{{translate("ALLDAY")}}</label>
-                    <input type="checkbox" id="input-all_day" class="js-icheck form-check-input" name="all_day" value=1 {{page.visibility}}>
+                    <div class="input-group js-copy-container">
+                        <input type="checkbox" id="input-all_day" class="js-icheck form-check-input" name="all_day" value=1 {{page.visibility}}>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-12">
@@ -57,6 +58,6 @@
     </div>
     <div class="box-footer text-center">
         <button type="reset" class="btn btn-default">{{translate('RESET')}}</button>
-        <button type="submit" class="btn btn-primary js-submit">{{translate('SAVE')}}</button>
+        <button type="submit" class="btn btn-primary js-submit">{{translate('EVENT.CREATEC')}}</button>
     </div>
 </form>

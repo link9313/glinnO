@@ -1,6 +1,6 @@
 {% extends "layouts/default.html.twig" %}
 
-{% set page_active = "about" %}
+{% set page_active = "calendar" %}
 
 {# Overrides blocks in head of base template #}
 {% block page_title %}{{translate("Calendar")}}{% endblock %}
@@ -9,8 +9,8 @@
 
 {% block stylesheets_page %}
     {{parent()}}
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.print.min.css" rel="stylesheet" media='print'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.print.min.css" rel="stylesheet" media='print'>
 {% endblock %}
 
 {% block body_matter %}
@@ -24,12 +24,11 @@
             <br>
         </div>
         <div class="col-md-4">
-            <div class="dropdown">
-                {% if checkAccess('create_event') %}
-		            <a href="https://localhost/glinno/public/event" class="btn btn-default btn-lg btn-block btn-flat" type="button">Create Event</a>
-                {% endif %}
-
-                <button class="btn btn-default btn-lg btn-block btn-flat dropdown-toggle" type="button" id="categories" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category<span class="caret"></span></button>
+            {% if checkAccess('create_event') %}
+                <a href="https://localhost/glinno/public/events" class="btn btn-default btn-lg btn-block btn-flat" type="button">Create Event</a>
+            {% endif %}
+            <!-- <div class="dropdown">
+		            <button class="btn btn-default btn-lg btn-block btn-flat dropdown-toggle" type="button" id="categories" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category<span class="caret"></span></button>
                 <ul class="dropdown-menu" aria-labelledby="categories">
                     <li><a href="#">All</a></li>
                     <li><a href="#">Jazz</a></li>
@@ -47,7 +46,7 @@
                 <input type="text" id="inputSearch" class="form-control" placeholder="Artist/Venue" required autofocus>
                 <br>
                 <button class="btn btn-primary btn-lg btn-block btn-flat" type="submit">Search</button>
-            </form>
+            </form> -->
         </div>
     </div>
     <!-- /.row -->
@@ -56,13 +55,14 @@
         <div class="modal-dialog js-form-alerts">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 id="modalTitle" class="modal-title"></h4>
+                    <h4 class="modal-title">Location: <span id="title"></span></h4>
                 </div>
-                <div id="modalBody1" class="modal-body">
-                </div>
-                <div id="modalBody2" class="modal-body">
-                </div>
-                <div id="modalBody3" class="modal-body">
+                <div id="modalBody" class="modal-body">
+                    <p>Location: <span id="location"></span><br>
+                    Start Time: <span id="startTime"></span><br>
+                    End Time: <span id="endTime"></span><br>
+                    URL: <a href="" id="url" target="_blank"><span id="urlText"></span></a><br>
+                    Notes: <span id="notes"></span><br>
                 </div>
                 <div class="modal-footer btn-group-action">
                     <button type="button" class="btn btn-default btn-lg btn-block" data-dismiss="modal">{{translate("Close")}}</button>
@@ -91,7 +91,7 @@
 {% block scripts_page %}
     {{parent()}}
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.1/fullcalendar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
 
     <script>
         // Adjust calendar based on size of screen for mobile devices
@@ -118,95 +118,55 @@
                 navLinks: true, // can click day/week names to navigate views
                 editable: false,
                 eventLimit: true, // allow "more" link when too many events
+                ignoreTimezone: true,
 
                 eventClick:  function(event, jsEvent, view) {
-                    $('#modalTitle').html(event.title);
-                    $('#modalBody1').html(event.location);
-                    $('#modalBody2').html(event.date);
-                    $('#modalBody3').html(event.times);
-                    $('#eventUrl').attr('href',event.url);
-                    $('#fullCalModal').modal();
+                    if (event.url) {
+                        $('#title').html(event.title);
+                        $('#location').html(event.location);
+                        $('#startTime').html(moment(event.start).format('MMM Do h:mm A'));
+                        $('#endTime').html(moment(event.end).format('MMM Do h:mm A'));
+                        $('#notes').html(event.description);
+                        $('#urlText').html(event.url);
+                        $('#url').attr("href", event.url);
+                        $('#fullCalModal').modal();
+                        return false;
+                    } else {
+                        $('#title').html(event.title);
+                        $('#location').html(event.location);
+                        $('#startTime').html(moment(event.start).format('MMM Do h:mm A'));
+                        $('#endTime').html(moment(event.end).format('MMM Do h:mm A'));
+                        $('#notes').html(event.description);
+                        $('#fullCalModal').modal();
+                    }
                 },
 
-                /* events: {
-                    url: '/api/events/calendar',
-                    type: 'POST',
-                    data: {},
-                    error: function() {
-                        $('#errorModal').modal();
-                    }
-                } */
-
-                events: [
-                    {
-                        title: 'UNO Jazz 1',
-                        location: 'The Slowdown',
-                        start: '2017-05-01T20:00:00',
-                        end: '2017-05-01T21:00:00'
-                    },
-                    {
-                        title: 'UNO Jazz 2',
-                        location: 'The Slowdown',
-                        start: '2017-05-07T19:00:00',
-                        end: '2017-05-07T20:00:00'
-                    },
-                    {
-                        title: 'The SuperBytes',
-                        location: 'The Slowdown',
-                        start: '2017-05-09T20:00:00',
-                        end: '2017-05-09T21:00:00'
-                    },
-                    {
-                        title: 'Kennedy Jones',
-                        location: 'The Slowdown',
-                        start: '2017-05-09T21:00:00',
-                        end: '2017-05-09T22:00:00'
-                    },
-                    {
-                        title: 'Clark & Company',
-                        location: 'The Slowdown',
-                        start: '2017-05-11T21:00:00',
-                        end: '2017-05-11T22:00:00'
-                    },
-                    {
-                        title: 'The Sonics',
-                        location: 'The Slowdown',
-                        start: '2017-05-11T22:00:00',
-                        end: '2017-05-11T23:00:00'
-                    },
-                    {
-                        title: 'Excision',
-                        location: 'The Slowdown',
-                        start: '2017-05-17T19:00:00',
-                        end: '2017-05-17T20:00:00'
-                    },
-                    {
-                        title: 'Flocian',
-                        location: 'The Slowdown',
-                        start: '2017-05-17T20:00:00',
-                        end: '2017-05-17T21:00:00'
-                    },
-                    {
-                        title: '8BLOCC',
-                        location: 'The Slowdown',
-                        start: '2017-05-17T22:00:00',
-                        end: '2017-05-17T23:00:00'
-                    },
-                    {
-                        title: 'The Sonics',
-                        location: 'Location: The Slowdown',
-			                  date: 'Date: April 21, 2017',
-			                  times: 'Time: 10:00pm-11:00pm',
-                        start: '2017-05-21T22:00:00',
-                        end: '2017-05-21T23:00:00'
-                    },
-                    {
-                        title: 'The SuperBytes',
-                        location: 'The Slowdown',
-                        start: '2017-05-26T20:00:00',
-                        end: '2017-05-26T21:00:00'
-                    }
-                ]
+                events: function (start, end, timezone, callback) {
+                		$.ajax({
+                    		url: "{{site.uri.public}}/events/list",
+                        type: "GET",
+                    		dataType: 'json',
+                    		success: function (data) {
+                    		    var events = [];
+                    		    $.each(data.rows, function (index) {
+                                events.push({
+                                    "id": data.rows[index].id,
+                                    "title": data.rows[index].name,
+                                    "location": data.rows[index].location,
+                                    "allDay": data.rows[index].all_day,
+                                    "start": data.rows[index].start,
+                                    "end": data.rows[index].end,
+                                    "description": data.rows[index].notes,
+                                    "url": data.rows[index].url
+                        			  });
+                    		    });
+                    		    callback(events);
+                    		},
+                        error: function() {
+                            $('#errorModal').modal();
+                        }
+                    });
+                }
             });
         });
     </script>

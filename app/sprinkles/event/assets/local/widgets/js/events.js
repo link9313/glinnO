@@ -29,8 +29,8 @@ function attachEventForm() {
 /**
  * Update event field(s)
  */
-function updateEvent(eventName, fieldName, fieldValue) {
-	var data = {
+function updateEvent(id, fieldName, fieldValue) {
+    var data = {
         'value': fieldValue
     };
 
@@ -71,7 +71,7 @@ function updateEvent(eventName, fieldName, fieldValue) {
         $("body").ufModal({
             sourceUrl: site.uri.public + "/modals/events/edit",
             ajaxParams: {
-                name: $(this).data('name')
+                id: $(this).data('id')
             },
             msgTarget: $("#alerts-page")
         });
@@ -84,7 +84,7 @@ function updateEvent(eventName, fieldName, fieldValue) {
         $("body").ufModal({
             sourceUrl: site.uri.public + "/modals/events/confirm-delete",
             ajaxParams: {
-                name: $(this).data('id')
+                id: $(this).data('id')
             },
             msgTarget: $("#alerts-page")
         });
@@ -104,19 +104,14 @@ function updateEvent(eventName, fieldName, fieldValue) {
     /**
      * Direct action buttons
      */
-    el.find('.js-event-activate').click(function() {
-        var btn = $(this);
-        updateUser(btn.data('id'), 'flag_verified', '1');
-    });
-
     el.find('.js-event-enable').click(function () {
         var btn = $(this);
-        updateUser(btn.data('id'), 'flag_enabled', '1');
+        updateEvent(btn.data('id'), 'flag_enabled', '1');
     });
 
     el.find('.js-event-disable').click(function () {
         var btn = $(this);
-        updateUser(btn.data('id'), 'flag_enabled', '0');
+        updateEvent(btn.data('id'), 'flag_enabled', '0');
     });
 }
 

@@ -26,7 +26,7 @@ return [
         "EDIT"                => "Edit event",
         "ENABLE"              => "Enable event",
         "INFO_PAGE"           => "Event information page for {{name}}",
-        "PAGE_DESCRIPTION"    => "A listing of the evens for your site.  Provides management tools including the ability to edit event details, enable/disable events, and more.",
+        "PAGE_DESCRIPTION"    => "A listing of the events for your site.  Provides management tools including the ability to edit event details, enable/disable events, and more.",
         "LATEST"              => "Latest Events",
         "VIEW_ALL"            => "View all events",
 
@@ -46,9 +46,9 @@ return [
     ],
 
     "LOCATION" => "Location (Street Address)",
-    "DATE" => "Date",
     "START" => "Start Date & Time",
     "END" => "End Date & Time",
+    "DATESAMPLE" => "MM/DD/YYYY TT:TT (23H)",
     "URL" => "URL",
     "NOTES" => "Notes",
     "ALLDAY" => "All Day",

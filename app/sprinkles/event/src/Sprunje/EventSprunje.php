@@ -23,11 +23,13 @@ class EventSprunje extends Sprunje
     protected $name = 'events';
 
     protected $sortable = [
+        'id',
         'name',
         'notes'
     ];
 
     protected $filterable = [
+        'id',
         'name',
         'notes'
     ];

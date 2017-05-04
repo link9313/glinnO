@@ -12,8 +12,8 @@
         <thead>
             <tr>
                 <th class="sorter-metatext" data-column-name="name" data-column-template="#event-table-column-info">{{translate('EVENT')}} <i class="fa fa-sort"></i></th>
-                <th class="sorter-metatext" data-column-name="notes" data-column-template="#event-table-column-notes">{{translate('NOTE')}} <i class="fa fa-sort"></i></th>
-                <th data-column-name="flag_enabled" data-column-template="#event-table-column-actions" data-sorter="false" data-filter="false">{{translate('ACTIONS')}}</th>
+                <th class="sorter-metatext" data-column-name="notes" data-column-template="#event-table-column-notes">{{translate('NOTES')}} <i class="fa fa-sort"></i></th>
+                <th data-column-name="flag_enabled" data-column-template="#event-table-column-actions" data-sorter="false" data-filter="false">{{translate("ACTIONS")}}</th>
             </tr>
         </thead>
         <tbody>
@@ -52,44 +52,30 @@
                         <span class="caret"></span>
                     </button>
                 {{ else }}
-                    {{#ifCond row.flag_verified 0 }}
-                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                            {% endverbatim %}{{translate("UNACTIVATED")}}{% verbatim %}
-                            <span class="caret"></span>
-                        </button>
-                    {{ else }}
-                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                            {% endverbatim %}{{translate("ACTIVE")}}{% verbatim %}
-                            <span class="caret"></span>
-                        </button>
-                    {{/ifCond }}
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        {% endverbatim %}{{translate("ACTIVE")}}{% verbatim %}
+                        <span class="caret"></span>
+                    </button>
                 {{/ifCond }}
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                    {{#ifCond row.flag_verified 0 }}
                     <li>
-                        <a href="#" data-name="{{row.name}}" class="js-event-activate">
-                        <i class="fa fa-bolt"></i> {% endverbatim %}{{translate("EVENT.ACTIVATE")}}{% verbatim %}
-                        </a>
-                    </li>
-                    {{/ifCond }}
-                    <li>
-                        <a href="#" data-name="{{row.name}}" class="js-event-edit">
+                        <a href="#" data-id="{{row.id}}" class="js-event-edit">
                         <i class="fa fa-edit"></i> {% endverbatim %}{{translate("EVENT.EDIT")}}{% verbatim %}
                         </a>
                     </li>
                     <li>
                     {{#ifCond row.flag_enabled 1 }}
-                        <a href="#" data-name="{{row.name}}" class="js-event-disable">
+                        <a href="#" data-id="{{row.id}}" class="js-event-disable">
                         <i class="fa fa-minus-circle"></i> {% endverbatim %}{{translate("EVENT.DISABLE")}}{% verbatim %}
                         </a>
                     {{ else }}
-                        <a href="#" data-name="{{row.name}}" class="js-event-enable">
+                        <a href="#" data-id="{{row.id}}" class="js-event-enable">
                         <i class="fa fa-plus-circle"></i> {% endverbatim %}{{translate("EVENT.ENABLE")}}{% verbatim %}
                         </a>
                     {{/ifCond }}
                     </li>
                     <li>
-                        <a href="#" data-name="{{row.name}}" class="js-event-delete">
+                        <a href="#" data-id="{{row.id}}" class="js-event-delete">
                         <i class="fa fa-trash-o"></i> {% endverbatim %}{{translate("EVENT.DELETE")}}{% verbatim %}
                         </a>
                     </li>

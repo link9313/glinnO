@@ -45,10 +45,10 @@ class EventAdminController extends SimpleController
      */
     public function create($request, $response, $args)
     {
-        // Get POST parameters: name, location, date, all_day, start_time, end_time, url, notes, flag_enabled, creator_id
+        // Get POST parameters: name, location, start, end, all_day, url, notes, flag_enabled, creator_id
         $params = $request->getParsedBody();
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -59,7 +59,7 @@ class EventAdminController extends SimpleController
             throw new ForbiddenException();
         }
 
-        /** @var MessageStream $ms */
+        /** @var UserFrosting\Sprinkle\Core\MessageStream $ms */
         $ms = $this->ci->alerts;
 
         // Load the request schema
@@ -139,7 +139,7 @@ class EventAdminController extends SimpleController
             throw new NotFoundException($request, $response);
         }
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -173,7 +173,7 @@ class EventAdminController extends SimpleController
             ]);
         });
 
-        /** @var MessageStream $ms */
+        /** @var UserFrosting\Sprinkle\Core\MessageStream $ms */
         $ms = $this->ci->alerts;
 
         $ms->addMessageTranslated('success', 'EVENT.DELETION_SUCCESSFUL', [
@@ -201,7 +201,7 @@ class EventAdminController extends SimpleController
         /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
         $classMapper = $this->ci->classMapper;
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\Event $currentUser */
@@ -233,7 +233,7 @@ class EventAdminController extends SimpleController
         // GET parameters
         $params = $request->getQueryParams();
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -273,7 +273,7 @@ class EventAdminController extends SimpleController
             throw new NotFoundException($request, $response);
         }
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -310,7 +310,7 @@ class EventAdminController extends SimpleController
         // GET parameters
         $params = $request->getQueryParams();
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -382,17 +382,17 @@ class EventAdminController extends SimpleController
         $classMapper = $this->ci->classMapper;
 
         // Get the event to edit
-        $event = $classMapper->staticMethod('event', 'where', 'name', $event->name)
+        $event = $classMapper->staticMethod('event', 'where', 'id', $event->id)
             ->first();
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
         $currentUser = $this->ci->currentUser;
 
-        // Access-controlled resource - check that currentUser has permission to edit fields "name", "location", "date", "all_day", "start_time", "end_time", "url", "notes", "flag_enabled" for this event
-        $fieldNames = ['name','location','date','all_day','start_time','end_time','url', 'notes', 'flag_enabled'];
+        // Access-controlled resource - check that currentUser has permission to edit fields "name", "location", "start", "end", "all_day", "url", "notes", "flag_enabled" for this event
+        $fieldNames = ['name','location','start','end','all_day','url', 'notes', 'flag_enabled'];
 
         if (!$authorizer->checkAccess($currentUser, 'update_event_field', [
             'event' => $event,
@@ -429,94 +429,6 @@ class EventAdminController extends SimpleController
     }
 
     /**
-     * Renders a page displaying an event's information, in read-only mode.
-     *
-     * This checks that a user is currently logged in.
-     * It checks each field individually, showing only those that you have permission to view.
-     * This will also try to show buttons for activating, disabling/enabling, deleting, and editing the event.
-     * This page requires authentication.
-     * Request type: GET
-     */
-    public function pageInfo($request, $response, $args)
-    {
-        $event = $this->getEventFromParams($args);
-
-        // If the event no longer exists, forward to main event listing page
-        if (!$event) {
-            $redirectPage = $this->ci->router->pathFor('uri_events');
-            return $response->withRedirect($redirectPage, 404);
-        }
-
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
-        $authorizer = $this->ci->authorizer;
-
-        /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
-        $currentUser = $this->ci->currentUser;
-
-        // Access-controlled page
-        if (!$authorizer->checkAccess($currentUser, 'uri_event', [
-                'event' => $event
-            ])) {
-            throw new ForbiddenException();
-        }
-
-        // Determine fields that currentUser is authorized to view
-        $fieldNames = ['name', 'location', 'date', 'all_day', 'start_time', 'end_time', 'url', 'notes'];
-
-        // Generate form
-        $fields = [
-            // Always hide these
-            'hidden' => [],
-            'disabled' => []
-        ];
-
-        // Determine which fields should be hidden entirely
-        foreach ($fieldNames as $field) {
-            if ($authorizer->checkAccess($currentUser, 'view_event_field', [
-                'event' => $event,
-                'property' => $field
-            ])) {
-                $fields['disabled'][] = $field;
-            } else {
-                $fields['hidden'][] = $field;
-            }
-        }
-
-        // Determine buttons to display
-        $editButtons = [
-            'hidden' => []
-        ];
-
-        if (!$authorizer->checkAccess($currentUser, 'update_event_field', [
-            'event' => $event,
-            'fields' => ['name', 'location', 'date', 'all_day', 'start_time', 'end_time', 'url', 'notes']
-        ])) {
-            $editButtons['hidden'][] = 'edit';
-        }
-
-        if (!$authorizer->checkAccess($currentUser, 'update_event_field', [
-            'event' => $event,
-            'fields' => ['flag_enabled']
-        ])) {
-            $editButtons['hidden'][] = 'enable';
-        }
-
-        if (!$authorizer->checkAccess($currentUser, 'delete_event', [
-            'event' => $event
-        ])) {
-            $editButtons['hidden'][] = 'delete';
-        }
-
-        return $this->ci->view->render($response, 'pages/event.html.twig', [
-            'event' => $event,
-            'form' => [
-                'fields' => $fields,
-                'edit_buttons' => $editButtons
-            ]
-        ]);
-    }
-
-    /**
      * Renders the event listing page.
      *
      * This page renders a table of events, with dropdown menus for admin actions for each event.
@@ -526,7 +438,7 @@ class EventAdminController extends SimpleController
      */
     public function pageList($request, $response, $args)
     {
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -541,7 +453,7 @@ class EventAdminController extends SimpleController
     }
 
     /**
-     * Processes the request to update an existing event's basic details (name, location, date, all_day, start_time, end_time, url, notes)
+     * Processes the request to update an existing event's basic details (name, location, start, end, all_day, url, notes)
      *
      * Processes the request from the event update form, checking that:
      * 1. The target event's new name, if specified, is not already in use;
@@ -552,20 +464,20 @@ class EventAdminController extends SimpleController
      */
     public function updateInfo($request, $response, $args)
     {
-        // Get the event name from the URL
+        // Get the event id from the URL
         $event = $this->getEventFromParams($args);
 
         if (!$event) {
             throw new NotFoundException($request, $response);
         }
 
-        /** @var Config $config */
+        /** @var UserFrosting\Config\Config $config */
         $config = $this->ci->config;
 
         // Get PUT parameters
         $params = $request->getParsedBody();
 
-        /** @var MessageStream $ms */
+        /** @var UserFrosting\Sprinkle\Core\MessageStream $ms */
         $ms = $this->ci->alerts;
 
         // Load the request schema
@@ -594,7 +506,7 @@ class EventAdminController extends SimpleController
             }
         }
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -638,8 +550,8 @@ class EventAdminController extends SimpleController
 
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} updated event info for event {$event->name}.", [
-                'type' => 'account_update_info',
-                'event_id' => $currentUser->id
+                'type' => 'event_update_info',
+                'event_id' => $event->id
             ]);
         });
 
@@ -662,17 +574,17 @@ class EventAdminController extends SimpleController
      */
     public function updateField($request, $response, $args)
     {
-        // Get the event name from the URL
+        // Get the event id from the URL
         $event = $this->getEventFromParams($args);
 
-        if (!$event) {
+        if ($event) {
             throw new NotFoundException($request, $response);
         }
 
         // Get key->value pair from URL and request body
         $fieldName = $args['field'];
 
-        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
+        /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager $authorizer */
         $authorizer = $this->ci->authorizer;
 
         /** @var UserFrosting\Sprinkle\Account\Model\User $currentUser */
@@ -686,7 +598,7 @@ class EventAdminController extends SimpleController
             throw new ForbiddenException();
         }
 
-        /** @var Config $config */
+        /** @var UserFrosting\Config\Config $config */
         $config = $this->ci->config;
 
         // Get PUT parameters: value
@@ -724,18 +636,18 @@ class EventAdminController extends SimpleController
         // Get validated and transformed value
         $fieldValue = $data[$fieldName];
 
-        /** @var MessageStream $ms */
+        /** @var UserFrosting\Sprinkle\Core\MessageStream $ms */
         $ms = $this->ci->alerts;
 
         // Begin transaction - DB will be rolled back if an exception occurs
-        Capsule::transaction( function() use ($fieldName, $fieldValue, $event, $currentUser) {
+        Capsule::transaction( function() use ($fieldName, $fieldValue, $event) {
             $event->$fieldName = $fieldValue;
             $event->save();
 
             // Create activity record
             $this->ci->userActivityLogger->info("User {$currentUser->user_name} updated property '$fieldName' for event {$event->name}.", [
-                'type' => 'account_update_field',
-                'event_id' => $currentUser->id
+                'type' => 'event_update_field',
+                'event_id' => $event->id
             ]);
         });
 
@@ -759,7 +671,7 @@ class EventAdminController extends SimpleController
         return $response->withStatus(200);
     }
 
-    protected function getEventFromParams($params)
+    /*protected function getEventFromParams($params)
     {
         // Load the request schema
         $schema = new RequestSchema('schema:///get-by-name.json');
@@ -781,11 +693,43 @@ class EventAdminController extends SimpleController
             throw $e;
         }
 
+        /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper /
+        $classMapper = $this->ci->classMapper;
+
+        // Get the event
+        $event = $classMapper->staticMethod('event', 'where', 'name', $data['name'])
+            ->first();
+
+        return $event;
+    } */
+
+    protected function getEventFromParams($params)
+    {
+        // Load the request schema
+        $schema = new RequestSchema('schema:///get-by-id.json');
+
+        // Whitelist and set parameter defaults
+        $transformer = new RequestDataTransformer($schema);
+        $data = $transformer->transform($params);
+
+        // Validate, and throw exception on validation errors.
+        $validator = new ServerSideValidator($schema, $this->ci->translator);
+        if (!$validator->validate($data)) {
+            // TODO: encapsulate the communication of error messages from ServerSideValidator to the BadRequestException
+            $e = new BadRequestException();
+            foreach ($validator->errors() as $idx => $field) {
+                foreach($field as $eidx => $error) {
+                    $e->addUserMessage($error);
+                }
+            }
+            throw $e;
+        }
+
         /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
         $classMapper = $this->ci->classMapper;
 
-        // Get the event to delete
-        $event = $classMapper->staticMethod('event', 'where', 'name', $data['name'])
+        // Get the event
+        $event = $classMapper->staticMethod('event', 'where', 'id', $data['id'])
             ->first();
 
         return $event;

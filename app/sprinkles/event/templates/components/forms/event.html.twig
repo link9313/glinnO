@@ -31,7 +31,7 @@
                 <label>{{translate('START')}}</label>
                 <div class="input-group js-copy-container">
                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                    <input type="datetime-local" class="form-control js-copy-target" name="start" value="{{event.start}}" placeholder="{{translate('START')}}" {% if 'start' in form.fields.disabled %}disabled{% endif %}>
+                    <input type="datetime-local" class="form-control js-copy-target" name="start" value="{{event.start}}" placeholder="{{translate('DATESAMPLE')}}" {% if 'start' in form.fields.disabled %}disabled{% endif %}>
                 </div>
             </div>
         </div>
@@ -42,7 +42,7 @@
                 <label>{{translate('END')}}</label>
                 <div class="input-group js-copy-container">
                     <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                    <input type="datetime-local" class="form-control js-copy-target" name="end" value="{{event.end}}" placeholder="{{translate('END')}}" {% if 'end' in form.fields.disabled %}disabled{% endif %}>
+                    <input type="datetime-local" class="form-control js-copy-target" name="end" value="{{event.end}}" placeholder="{{translate('DATESAMPLE')}}" {% if 'end' in form.fields.disabled %}disabled{% endif %}>
                 </div>
             </div>
         </div>
@@ -59,11 +59,22 @@
         </div>
         {% endif %}
         {% if 'all_day' not in form.fields.hidden %}
-        <div class="col-sm-6">
+        <div class="col-sm-3">
             <div class="form-check">
-                <br>
                 <label class="form-check-label">{{translate('ALLDAY')}}</label>
-                <input type="checkbox" class="form-check-input" name="all_day" value=1 {% if 'all_day' in form.fields.disabled %}disabled{% endif %}>
+                <div class="input-group js-copy-container">
+                    <input type="checkbox" class="js-icheck form-check-input" name="all_day" value=1 {% if 'all_day' in form.fields.disabled %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if 'flag_enabled' not in form.fields.hidden %}
+        <div class="col-sm-3">
+            <div class="form-check">
+                <label class="form-check-label">{{translate('FLAGENABLED')}}</label>
+                <div class="input-group js-copy-container">
+                    <input type="checkbox" class="form-check-input" name="flag_enabled" value=1 checked="checked" {% if 'flag_enabled' in form.fields.disabled %}disabled{% endif %}>
+                </div>
             </div>
         </div>
         {% endif %}
@@ -72,14 +83,6 @@
             <div class="form-group">
                 <label for="input_notes">{{translate("NOTES")}}</label>
                 <textarea id="input_notes" class="form-control" type="text" name="notes" autocomplete="off" rows=4 {% if 'notes' in form.fields.disabled %}disabled{% endif %}>{{event.notes}}</textarea>
-            </div>
-        </div>
-        {% endif %}
-        {% if 'flag_enabled' not in form.fields.hidden %}
-        <div class="col-sm-6">
-            <div class="form-check">
-                <label class="form-check-label">{{translate('FLAGENABLED')}}</label>
-                    <input type="checkbox" class="form-check-input" name="flag_enabled" value=1 checked="checked" {% if 'flag_enabled' in form.fields.disabled %}disabled{% endif %}>
             </div>
         </div>
         {% endif %}

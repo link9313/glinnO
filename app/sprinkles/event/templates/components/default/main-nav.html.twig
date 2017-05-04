@@ -5,14 +5,14 @@
     {{parent()}}
     {% if checkAccess('create_event') %}
     <li>
-        <a href="{{site.uri.public}}/event" class="nav-highlight">{{translate("EVENT.CREATEC")}}</a>
+        <a href="{{site.uri.public}}/events" class="nav-highlight">{{translate("EVENT.CREATEC")}}</a>
     </li>
     {% endif %}
     <li>
-        <a href="{{site.uri.public}}/event/nearby" class="nav-highlight">{{translate("Nearby")}}</a>
+        <a href="{{site.uri.public}}/events/map" class="nav-highlight">{{translate("Map")}}</a>
     </li>
     <li>
-        <a href="{{site.uri.public}}/event/calendar" class="nav-highlight">{{translate("Calendar")}}</a>
+        <a href="{{site.uri.public}}/events/calendar" class="nav-highlight">{{translate("Calendar")}}</a>
     </li>
 {% endblock %}
 

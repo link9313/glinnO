@@ -77,7 +77,6 @@ class EventController extends SimpleController
 
         $translator = $this->ci->translator;
 
-
         if ($classMapper->staticMethod('event', 'exists', $data['name'], 'name')) {
             $message = $translator->translate('EVENT.NAME_NOT_AVAILABLE', $data);
             return $response->write($message)->withStatus(200);
@@ -103,7 +102,8 @@ class EventController extends SimpleController
 
         // Access-controlled page
         if (!$authorizer->checkAccess($currentUser, 'create_event')) {
-            throw new ForbiddenException();
+            $ms->addMessageTranslated("danger", "EVENT.ACCESS_DENIED");
+            return $response->withStatus(403);
         }
 
         // Load validation rules
@@ -150,18 +150,22 @@ class EventController extends SimpleController
         /** @var Config $config */
         $config = $this->ci->config;
 
-        return $this->ci->view->render($response, 'pages/edit-event.html.twig', [
-            "page" => [
-                "validators" => [
-                    "update_event"    => $validatorAccountSettings->rules('json', false)
-                ],
-                "visibility" => ($authorizer->checkAccess($currentUser, "update_event") ? "" : "disabled")
+        return $this->ci->view->render($response, 'pages/create-event.html.twig', [
+            'event' => $event,
+            'form' => [
+                'action' => "api/events/e/{$event->id}",
+                'method' => 'PUT',
+                'fields' => $fields,
+                'submit_text' => 'Update event'
+            ],
+            'page' => [
+                'validators' => $validator->rules('json', false)
             ]
         ]);
     }
 
     /**
-     * Processes the request to create a new event (from the admin controls).
+     * Processes the request to create a new event.
      *
      * Processes the request from the event creation form, checking that:
      * 1. The event name is not already in use;
@@ -169,12 +173,12 @@ class EventController extends SimpleController
      * 3. The submitted data is valid.
      * This route requires authentication.
      * Request type: POST
-     * @see pageEdit
+     * @see pageCreate
      */
     public function create($request, $response, $args)
     {
-        // Get POST parameters: name, location, date, all_day, start_time, end_time, url, notes, flag_enabled, creator_id
-        $params = $request->getParsedBody();
+        /** @var UserFrosting\Sprinkle\Core\MessageStream $ms */
+        $ms = $this->ci->alerts;
 
         /** @var UserFrosting\Sprinkle\Account\Authorize\AuthorizationManager */
         $authorizer = $this->ci->authorizer;
@@ -185,14 +189,17 @@ class EventController extends SimpleController
         /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
         $classMapper = $this->ci->classMapper;
 
+        /** @var UserFrosting\Config\Config $config */
+        $config = $this->ci->config;
+
+        // POST parameters
+        $params = $request->getParsedBody();
+
         // Access-controlled page
         if (!$authorizer->checkAccess($currentUser, 'create_event')) {
             $ms->addMessageTranslated("danger", "EVENT.ACCESS_DENIED");
             return $response->withStatus(403);
         }
-
-        /** @var MessageStream $ms */
-        $ms = $this->ci->alerts;
 
         // Load the request schema
         $schema = new RequestSchema('schema:///create.json');
@@ -230,15 +237,13 @@ class EventController extends SimpleController
         }
 
         $data['creator_id'] = $currentUser->id;
+        $data['name'] = html_entity_decode($data['name'], ENT_QUOTES);
+        $data['location'] = html_entity_decode($data['location'], ENT_QUOTES);
+        $data['notes'] = html_entity_decode($data['notes'], ENT_QUOTES);
         $data['flag_verified'] = false;
 
         /** @var Config $config */
         $config = $this->ci->config;
-
-        // If currentUser does not have permission to add the event, throw an exception.
-        if (!$authorizer->checkAccess($currentUser, 'create_event')) {
-            throw new ForbiddenException();
-        }
 
         // All checks passed!  log events/activities, create event
         // Begin transaction - DB will be rolled back if an exception occurs
@@ -257,10 +262,11 @@ class EventController extends SimpleController
                 'type' => 'event_create',
                 'id' => $event->id
             ]);
-
-            $ms->addMessageTranslated("success", "EVENT.CREATED");
         });
 
+        $ms->addMessageTranslated("success", "EVENT.CREATED", [
+            'name' => $event->name
+        ]);
         return $response->withStatus(200);
     }
 
@@ -273,18 +279,17 @@ class EventController extends SimpleController
      */
     public function getCalendar($request, $response, $args)
     {
-        $event = $this->getEventFromParams($args);
+        // GET parameters
+        $params = $request->getQueryParams();
 
-        // If the event doesn't exist, return 404
-        if (!$event) {
-            throw new NotFoundException($request, $response);
-        }
+        /** @var UserFrosting\Sprinkle\Core\Util\ClassMapper $classMapper */
+        $classMapper = $this->ci->classMapper;
 
-        $result = $event->toArray();
+        $sprunje = $classMapper->createInstance('event_sprunje', $classMapper, $params);
 
         // Be careful how you consume this data - it has not been escaped and contains untrusted user-supplied content.
         // For example, if you plan to insert it into an HTML DOM, you must escape it on the client side (or use client-side templating).
-        return $response->withJson($result, 200, JSON_PRETTY_PRINT);
+        return $sprunje->toResponse($response);
     }
 
     /**
@@ -292,9 +297,9 @@ class EventController extends SimpleController
      *
      * Request type: GET
      */
-    public function pageNearby($request, $response, $args)
+    public function pageMap($request, $response, $args)
     {
-        return $this->ci->view->render($response, 'pages/nearby.html.twig');
+        return $this->ci->view->render($response, 'pages/map.html.twig');
     }
 
     /**

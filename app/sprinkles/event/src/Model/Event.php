@@ -21,8 +21,8 @@ use UserFrosting\Sprinkle\Core\Model\UFModel;
  * @property int id
  * @property string name
  * @property string location
- * @property dateTime start
- * @property dateTime end
+ * @property timestamp start_time
+ * @property timestamp end_time
  * @property bool all_day
  * @property string url
  * @property string notes
@@ -45,10 +45,9 @@ class Event extends UFModel
         "id",
         "name",
         "location",
-        "date",
+        "start",
+        "end",
         "all_day",
-        "start_time",
-        "end_time",
         "url",
         "notes",
         "flag_enabled",

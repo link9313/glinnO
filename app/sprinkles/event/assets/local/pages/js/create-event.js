@@ -1,10 +1,10 @@
 /**
  * Page-specific Javascript file.  Should generally be included as a separate asset bundle in your page template.
- * example: {{ assets.js('js/pages/sign-in-or-register') | raw }}
+ * example: {{ assets.js('js/pages/create-event') | raw }}
  *
  * This script depends on validation rules specified in components/page.js.twig.
  *
- * Target page: create/event
+ * Target page: event
  */
 $(document).ready(function() {
 
@@ -12,7 +12,7 @@ $(document).ready(function() {
     $('.js-select2').select2();
 
     $("#create-event").ufForm({
-        validators: page.validators.account_settings,
+        validators: page.validators.create_event,
         msgTarget: $("#alerts-page"),
         binaryCheckboxes: true
     }).on("submitSuccess.ufForm", function() {
